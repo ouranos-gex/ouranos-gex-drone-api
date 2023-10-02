@@ -1,0 +1,953 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "option go_package = \"./pb\";",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "SDSP_A"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/common_service/aim_delete": {
+      "post": {
+        "summary": "空域削除",
+        "description": "Userが登録した空域を削除する。",
+        "operationId": "SDSP_A_AIM_Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0DeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0DeleteRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_get_value": {
+      "post": {
+        "summary": "空間情報取得",
+        "description": "リスク値などの空間情報の値を得る。\nAirspace以外（バリアなど）の取得も可能（ファイルimportではなくオンラインでの取得にも利用）",
+        "operationId": "SDSP_A_AIM_GetValue",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0GetValuetResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0GetValueRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_put_airspace": {
+      "post": {
+        "summary": "空域登録",
+        "description": "各種形状の空域空間を空間ID群で登録する。\nエリア予約（飛行計画予約）の重複はエラー。",
+        "operationId": "SDSP_A_AIM_PutAirspace",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0PutAirspaceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "設定できるエリアの種別（AirspaceInfo）はユーザ権限による",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0PutAirspaceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_put_reserve_area": {
+      "post": {
+        "summary": "空域予約",
+        "description": "飛行計画（各種形状の空域空間）を空間ID群で登録する。\n重複はエラー",
+        "operationId": "SDSP_A_AIM_PutReserveArea",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0PutAirspaceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0PutReserveAreaRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_select_airspace": {
+      "post": {
+        "summary": "空域情報取得",
+        "description": "PutでUserが登録した空域のID(object_id)を取得する。",
+        "operationId": "SDSP_A_AIM_SelectAirspace",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0SelectAirspaceResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0SelectAirspaceRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_select_airspace_arrangement": {
+      "post": {
+        "summary": "飛行可能な空域取得",
+        "description": "指定した領域および時刻で飛行可能な空域空間の空間ID群を得る。\n空域空間の値の取得にはGetValue()を利用する。",
+        "operationId": "SDSP_A_AIM_SelectAirspaceArrangement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v0SelectAirspaceArrangementResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0SelectAirspaceArrangementRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/aim_select_airspace_arrangement_stream": {
+      "post": {
+        "summary": "飛行可能な空域のストリームによる取得。",
+        "description": "指定した領域および時刻で飛行可能な空域空間の空間ID群をストリームで得る。\n次のようなケースに利用する。\n・大量のデータを分割して取得\n・変化を取得",
+        "operationId": "SDSP_A_AIM_SelectAirspaceArrangementStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v0AirspaceArrangement"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v0AirspaceArrangement"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v0SelectAirspaceArrangementRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    },
+    "/common_service/gen_connect": {
+      "post": {
+        "summary": "サーバーへの接続（ログイン）",
+        "description": "ユーザIDとパスワードでトークンを得る",
+        "operationId": "SDSP_A_GEN_Connect",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/ProtocolToken"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ProtocolConnectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SDSP_A"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "AirAreaAirAreaAttribute": {
+      "type": "string",
+      "enum": [
+        "FREE",
+        "P",
+        "R",
+        "K",
+        "N"
+      ],
+      "default": "FREE",
+      "title": "- FREE: 制限なし。利用されることはない（PutAirspaceArrangementRequest()では設定せずDeleteを利用する,GetValuetResponse()でFreeの場合は空間IDは返却されない）\n - P: 飛行禁止\n - R: 飛行制限\n - K: 訓練等空域\n - N: 一時制限"
+    },
+    "AirspaceValueAirArea": {
+      "type": "object",
+      "properties": {
+        "attr": {
+          "$ref": "#/definitions/AirAreaAirAreaAttribute",
+          "title": "RA"
+        },
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "AirspaceValueEmergency": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "素となる情報へのリンク",
+          "title": "Emergency attr = 1 ; // 不要？"
+        }
+      },
+      "title": "緊急用務空域"
+    },
+    "BuildingBuildingDefAttribute": {
+      "type": "string",
+      "enum": [
+        "WITHOUT_BUILDING",
+        "INCLUDE_BUILDING",
+        "INSIDE_BUILDING"
+      ],
+      "default": "WITHOUT_BUILDING",
+      "title": "- WITHOUT_BUILDING: 建物等を含まない。利用されることはない（GetValueRequest()でBARRIERが指定された際には建物を含まないバリア情報は返らない）。\n - INCLUDE_BUILDING: 建物を含む。（境界もしくは建物内）\n - INSIDE_BUILDING: ボクセル全体が建物内（教会と建物内の識別が可能な場合）"
+    },
+    "GetValueRequestObjectType": {
+      "type": "string",
+      "enum": [
+        "BARRIER",
+        "WEATHER",
+        "Airspace_AIRAREA",
+        "Airspace_EMERGENCY",
+        "Airspace_RESERCVE_AREA",
+        "MICROWAVE",
+        "GROUND_RISK"
+      ],
+      "default": "BARRIER",
+      "description": "- BARRIER: Terrain,Building\n - Airspace_AIRAREA: Airspaceについては種別ごとに指定可能とする。\n - Airspace_EMERGENCY: Airspaceについては種別ごとに指定可能とする。\n - Airspace_RESERCVE_AREA: Airspaceについては種別ごとに指定可能とする。\n - MICROWAVE: 検討中\n - GROUND_RISK: 検討中",
+      "title": "対象物"
+    },
+    "PhysicalBarrierValueBuilding": {
+      "type": "object",
+      "properties": {
+        "attr": {
+          "$ref": "#/definitions/BuildingBuildingDefAttribute"
+        },
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "PhysicalBarrierValueTerrain": {
+      "type": "object",
+      "properties": {
+        "attr": {
+          "$ref": "#/definitions/TerrainTerrainAttribute"
+        },
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "PointAltitudeAttribute": {
+      "type": "string",
+      "enum": [
+        "ALTITUDE_ATTRIBUTE_ELIPSOIDE",
+        "ALTITUDE_ATTRIBUTE_MSL",
+        "ALTITUDE_ATTRIBUTE_AGL"
+      ],
+      "default": "ALTITUDE_ATTRIBUTE_ELIPSOIDE",
+      "title": "- ALTITUDE_ATTRIBUTE_ELIPSOIDE: 楕円球体面高（当面対象外）\n - ALTITUDE_ATTRIBUTE_MSL: ジオイド高\n - ALTITUDE_ATTRIBUTE_AGL: 地上高（当面対象外）"
+    },
+    "ProtocolConnectRequest": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "title": "ユーザID"
+        },
+        "organizationID": {
+          "type": "string",
+          "title": "組織ID"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "ProtocolPeriod": {
+      "type": "object",
+      "properties": {
+        "startTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "開始時刻 UNIX Time (UTC sec)"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "終了時刻 UNIX Time (UTC sec)"
+        }
+      },
+      "title": "期間"
+    },
+    "ProtocolPoint": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "title": "WGS84"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "title": "WGS84"
+        },
+        "altitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "altitudeAttribute": {
+          "$ref": "#/definitions/PointAltitudeAttribute"
+        }
+      },
+      "title": "座標情報"
+    },
+    "ProtocolSpatialIdentification": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "title": "z/f/x/y"
+        }
+      },
+      "title": "空間ID"
+    },
+    "ProtocolToken": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/TokenCode"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "SpatialFigurePolygon": {
+      "type": "object",
+      "title": "多角形（表現形式検討中）"
+    },
+    "SpatialFigureTube": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/definitions/ProtocolPoint",
+          "title": "始点座標"
+        },
+        "end": {
+          "$ref": "#/definitions/ProtocolPoint",
+          "title": "終点座標"
+        },
+        "radian": {
+          "type": "number",
+          "format": "float",
+          "title": "半径(m)"
+        }
+      },
+      "title": "円筒形形状"
+    },
+    "SpatialValueRiskValue": {
+      "type": "object",
+      "properties": {
+        "risk": {
+          "type": "number",
+          "format": "float",
+          "title": "リスク値。オプショナル。"
+        }
+      }
+    },
+    "TerrainTerrainAttribute": {
+      "type": "string",
+      "enum": [
+        "BUILDING",
+        "INCLUDE_GROUND",
+        "UNDER_GROUND"
+      ],
+      "default": "BUILDING",
+      "title": "- BUILDING: 地表面または地下を含まない。利用されることはない（GetValueRequest()でBARRIERが指定された際には建物を含まないバリア情報は返らない）。\n - INCLUDE_GROUND: 地面（地表面および地下）\n - UNDER_GROUND: ボクセル全体が地下（地表面と地下の識別が可能な場合）"
+    },
+    "TokenCode": {
+      "type": "string",
+      "enum": [
+        "COMPLETE",
+        "INVALID",
+        "UNAVAILABLE_UAV",
+        "INTERNAL_ERROR"
+      ],
+      "default": "COMPLETE",
+      "title": "- COMPLETE: ログイン成功\n - INVALID: パスワードが無効\n - UNAVAILABLE_UAV: 許容されない機体（他組織など）"
+    },
+    "WeatherValueCurrentWeather": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64",
+          "title": "時刻"
+        },
+        "windDirection": {
+          "type": "number",
+          "format": "float",
+          "title": "風向(degree)"
+        },
+        "windSpeed": {
+          "type": "number",
+          "format": "float",
+          "title": "風速(kt)"
+        },
+        "cloudRate": {
+          "type": "number",
+          "format": "float",
+          "title": "雲の割合(%)"
+        },
+        "temperature": {
+          "type": "number",
+          "format": "float",
+          "title": "気温（°C）"
+        },
+        "dewPoint": {
+          "type": "number",
+          "format": "float",
+          "title": "露点温度（°C）"
+        },
+        "pressure": {
+          "type": "number",
+          "format": "float",
+          "title": "気圧(hPa)"
+        },
+        "precipitation": {
+          "type": "number",
+          "format": "float",
+          "title": "降水量（mm/h）"
+        },
+        "gggg": {
+          "type": "string",
+          "title": "運航上重要な気象"
+        }
+      },
+      "description": "無効データの表現方法は課題",
+      "title": "現況"
+    },
+    "WeatherValueForecast": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64",
+          "title": "時刻"
+        },
+        "windDirection": {
+          "type": "number",
+          "format": "float",
+          "title": "風向(degree)"
+        },
+        "windSpeed": {
+          "type": "number",
+          "format": "float",
+          "title": "風速(kt)"
+        },
+        "cloudRate": {
+          "type": "number",
+          "format": "float",
+          "title": "雲の割合(%)"
+        },
+        "precipitation": {
+          "type": "number",
+          "format": "float",
+          "title": "降水量（mm/h）"
+        }
+      },
+      "title": "予報"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v0AirspaceArrangement": {
+      "type": "object",
+      "properties": {
+        "flyableSpace": {
+          "$ref": "#/definitions/v0SpatialFigure",
+          "title": "飛行可能領域"
+        },
+        "occupiedSpace": {
+          "$ref": "#/definitions/v0SpatialFigure",
+          "title": "飛行可能領域から閉塞領域に変更された領域"
+        },
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_SelectAirspaceArrangement出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0AirspaceValue": {
+      "type": "object",
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/AirspaceValueAirArea",
+          "title": "[oneof Airspace_info] 飛行空域"
+        },
+        "emergency": {
+          "$ref": "#/definitions/AirspaceValueEmergency",
+          "title": "[oneof Airspace_info] 緊急用務空域"
+        }
+      },
+      "title": "空域空間の情報"
+    },
+    "v0DeleteRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          },
+          "title": "リクエストしたUserIDが登録したUserIDと不一致の場合はエラー。"
+        }
+      },
+      "title": "AIM_DeleteRequest入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0DeleteResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_DeleteRequest出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0ErrorCode": {
+      "type": "string",
+      "enum": [
+        "ErrorCode_UNSPECIFIED",
+        "ErrorCode_Duplicate",
+        "ErrorCode_AccessDeny"
+      ],
+      "default": "ErrorCode_UNSPECIFIED",
+      "description": "- ErrorCode_Duplicate: 重複\n - ErrorCode_AccessDeny: アクセス権限なし",
+      "title": "エラーコード"
+    },
+    "v0GetValueRequest": {
+      "type": "object",
+      "properties": {
+        "figure": {
+          "$ref": "#/definitions/v0SpatialFigure",
+          "title": "取得する領域"
+        },
+        "requestType": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetValueRequestObjectType"
+          },
+          "title": "取得するオブジェクトのタイプ"
+        }
+      },
+      "title": "AIM_GetValue入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0GetValuetResponse": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v0SpatialIdentifierInformation"
+          }
+        },
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_GetValue出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0PhysicalBarrierValue": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "$ref": "#/definitions/ProtocolPeriod",
+          "title": "有効期間"
+        },
+        "terrain": {
+          "$ref": "#/definitions/PhysicalBarrierValueTerrain",
+          "title": "地形 [oneof barrier_info]"
+        },
+        "building": {
+          "$ref": "#/definitions/PhysicalBarrierValueBuilding",
+          "title": "建物 [oneof barrier_info]"
+        }
+      },
+      "title": "物標。地上の物理的な障害物\n空域のバリア（ロジカルなバリア）はAirspaceで定義する。"
+    },
+    "v0PutAirspaceRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID。0の場合は新規登録。既存のIDではappend、User名が一致していない場合はエラー。"
+        },
+        "area": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v0SpatialFigure"
+          },
+          "title": "設定するエリア。"
+        },
+        "value": {
+          "$ref": "#/definitions/v0AirspaceValue",
+          "title": "areaに設定する値。予約空域（飛行計画予約）の重複はエラー。"
+        }
+      },
+      "description": "設定できるエリアの種別（AirspaceInfo）はユーザ権限による",
+      "title": "AIM_PutAirspaceRequest入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0PutAirspaceResponse": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID"
+        },
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_PutAirspaceArrangementRequest出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0PutReserveAreaRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID。0の場合は新規登録。既存のIDではappend、User名が一致していない場合はエラー。"
+        },
+        "area": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v0SpatialFigure"
+          },
+          "title": "設定するエリア。"
+        },
+        "value": {
+          "$ref": "#/definitions/v0ReserveAreaValue",
+          "title": "予約空域（飛行計画予約）"
+        }
+      },
+      "title": "AIM_PutReserveArea入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0ReserveAreaValue": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "$ref": "#/definitions/ProtocolPeriod",
+          "title": "有効期間"
+        },
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      },
+      "title": "空域予約もしくは飛行計画予約"
+    },
+    "v0SelectAirspaceArrangementRequest": {
+      "type": "object",
+      "properties": {
+        "figure": {
+          "$ref": "#/definitions/v0SpatialFigure",
+          "title": "取得する領域"
+        },
+        "period": {
+          "$ref": "#/definitions/ProtocolPeriod",
+          "title": "取得する時間帯"
+        }
+      },
+      "title": "AIM_SelectAirspaceArrangement入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0SelectAirspaceArrangementResponse": {
+      "type": "object",
+      "properties": {
+        "flyableSpace": {
+          "$ref": "#/definitions/v0SpatialFigure",
+          "title": "飛行可能領域"
+        },
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_SelectAirspaceArrangement出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0SelectAirspaceRequest": {
+      "type": "object",
+      "properties": {
+        "area": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v0SpatialFigure"
+          },
+          "title": "対象エリア。指定がない場合はユーザーが登録したエリアすべて（飛行計画予約含む）。"
+        }
+      },
+      "title": "AIM_SelectAirspaceRequest入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0SelectAirspaceResponse": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          },
+          "title": "登録ID。"
+        },
+        "error": {
+          "$ref": "#/definitions/v0ErrorCode"
+        }
+      },
+      "title": "AIM_SelectAirspaceRequest出力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v0SpatialFigure": {
+      "type": "object",
+      "properties": {
+        "identification": {
+          "$ref": "#/definitions/ProtocolSpatialIdentification",
+          "title": "[oneof figure]"
+        },
+        "tube": {
+          "$ref": "#/definitions/SpatialFigureTube",
+          "title": "[oneof figure]"
+        },
+        "polygon": {
+          "$ref": "#/definitions/SpatialFigurePolygon",
+          "title": "[oneof figure]"
+        }
+      },
+      "title": "エリアや空間の領域の指定"
+    },
+    "v0SpatialIdentifierInformation": {
+      "type": "object",
+      "properties": {
+        "identification": {
+          "$ref": "#/definitions/ProtocolSpatialIdentification",
+          "title": "空間ID"
+        },
+        "value": {
+          "$ref": "#/definitions/v0SpatialValue",
+          "title": "バリア空間情報"
+        }
+      },
+      "title": "空間IDの値"
+    },
+    "v0SpatialValue": {
+      "type": "object",
+      "properties": {
+        "barrier": {
+          "$ref": "#/definitions/v0PhysicalBarrierValue",
+          "title": "[oneof infomation]"
+        },
+        "wether": {
+          "$ref": "#/definitions/v0WeatherValue",
+          "title": "[oneof infomation]"
+        },
+        "airspace": {
+          "$ref": "#/definitions/v0AirspaceValue",
+          "title": "[oneof infomation]"
+        },
+        "reserveArea": {
+          "$ref": "#/definitions/v0ReserveAreaValue",
+          "title": "[oneof infomation]"
+        },
+        "risk": {
+          "$ref": "#/definitions/SpatialValueRiskValue"
+        }
+      }
+    },
+    "v0WeatherValue": {
+      "type": "object",
+      "properties": {
+        "currentWeather": {
+          "$ref": "#/definitions/WeatherValueCurrentWeather",
+          "title": "[oneof weather_info]"
+        },
+        "forecast": {
+          "$ref": "#/definitions/WeatherValueForecast",
+          "title": "[oneof weather_info]"
+        }
+      },
+      "title": "気象（2次元表現化については課題）"
+    }
+  }
+}
