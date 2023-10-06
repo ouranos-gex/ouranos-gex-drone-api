@@ -1,5 +1,11 @@
 # ウラノスGEX ドローン領域API仕様
 
+### 概要
+- ドローン領域のAPI仕様です。
+- 空間ID仕様については以下のリンクを参照して下さい。
+<!--[Digital Architecture Design Center 4次元時空間情報基盤 ガイドライン](https://www.ipa.go.jp/digital/architecture/project/autonomousmobilerobot/3dspatial_guideline.html)-->
+<p><a href="https://www.ipa.go.jp/digital/architecture/project/autonomousmobilerobot/3dspatial_guideline.html" target="_blank">Digital Architecture Design Center 4次元時空間情報基盤アーキテクチャガイドライン（β版）</a></p>
+
 ### （1）領域横断仕様
 空間IDや座標など共通の型をProtcolBuffer形式で定義した仕様。領域横断のAPIは、各領域API仕様内に定義し、API名のプリフィックスに“GEN_”が付加される。 
 |仕様名|ファイル名|
