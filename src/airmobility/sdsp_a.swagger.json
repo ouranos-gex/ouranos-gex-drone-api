@@ -1,0 +1,1217 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sdsp_a.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "AirMobilityAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/uas/api/airmobility/v2/delete-object": {
+      "post": {
+        "summary": "空間情報削除",
+        "description": "空間情報を削除する。",
+        "operationId": "AirMobilityAPI_DeleteObject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2DeleteObjectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2DeleteObjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/get-object": {
+      "post": {
+        "summary": "空間情報取得",
+        "description": "オブジェクトの値を得る",
+        "operationId": "AirMobilityAPI_GetObject",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v2Object"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v2Object"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2GetObjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/get-value": {
+      "post": {
+        "summary": "指定領域空間情報取得",
+        "description": "指定した領域のリスク値などの空間情報の値を得る。",
+        "operationId": "AirMobilityAPI_GetValue",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v2Objects"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v2Objects"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2GetValueRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/pub-object": {
+      "post": {
+        "summary": "空間情報登録",
+        "description": "オブジェクトを空間ID群で登録する。",
+        "operationId": "AirMobilityAPI_PutObject",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2PutObjectResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2PutObjectRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/put-reserve-area": {
+      "post": {
+        "summary": "飛行計画登録（予約）",
+        "description": "飛行計画（各種形状の空域空間）を空間ID群で登録する。\n重複はエラー",
+        "operationId": "AirMobilityAPI_PutReserveArea",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2PutReserveAreaResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2PutReserveAreaRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/select-airspace-arrangement": {
+      "post": {
+        "summary": "飛行許容空域取得",
+        "description": "指定した領域および時刻を指定し、飛行許容領域の空間ID群を得る。\n空域空間の値の取得にはGetValue()を利用する。\n飛行許容領域は下記を含まない領域\n・バリア\n・飛行制限空域\n・緊急用務空域\n・飛行計画空域\n・オーバーレイ",
+        "operationId": "AirMobilityAPI_SelectAirspaceArrangement",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2SelectAirspaceArrangementResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2SelectAirspaceArrangementRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
+    "/uas/api/airmobility/v2/select-airspace-arrangement-stream": {
+      "post": {
+        "summary": "飛行許容空域取得（ストリーム）",
+        "description": "指定した領域および時刻で飛行可能な空域空間の空間ID群をストリームで得る。\n次のようなケースに利用する。\n・大量のデータを分割して取得\n・変化を取得",
+        "operationId": "AirMobilityAPI_SelectAirspaceArrangementStream",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v2AirspaceArrangement"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v2AirspaceArrangement"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2SelectAirspaceArrangementRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "PointAltitudeAttribute": {
+      "type": "string",
+      "enum": [
+        "ALTITUDE_ATTRIBUTE_ELIPSOIDE",
+        "ALTITUDE_ATTRIBUTE_MSL",
+        "ALTITUDE_ATTRIBUTE_AGL"
+      ],
+      "default": "ALTITUDE_ATTRIBUTE_ELIPSOIDE",
+      "title": "- ALTITUDE_ATTRIBUTE_ELIPSOIDE: 楕円球体面高（当面対象外）\n - ALTITUDE_ATTRIBUTE_MSL: ジオイド高\n - ALTITUDE_ATTRIBUTE_AGL: 地上高（当面対象外）"
+    },
+    "PropertyRestrictedAreaRestrictType": {
+      "type": "string",
+      "enum": [
+        "FREE",
+        "P",
+        "R",
+        "K",
+        "N"
+      ],
+      "default": "FREE",
+      "title": "- FREE: 制限なし（idが存在しないことと等価）\n - P: 飛行禁止\n - R: 飛行制限\n - K: 訓練等空域\n - N: 一時制限"
+    },
+    "SpatialFigurePolygon": {
+      "type": "object",
+      "title": "多角形（表現形式検討中）"
+    },
+    "SpatialFigureTube": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/definitions/v2Point",
+          "title": "始点座標"
+        },
+        "end": {
+          "$ref": "#/definitions/v2Point",
+          "title": "終点座標"
+        },
+        "radian": {
+          "type": "number",
+          "format": "float",
+          "title": "1辺長(m)"
+        }
+      },
+      "title": "角柱形状"
+    },
+    "ValueBuildingPropertyBuilding": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "ValueBuildingVoxcelValueBuilding": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "vacant": {
+          "type": "boolean",
+          "title": "値（デフォルトfalse）。falseはidが存在しないことと等価"
+        }
+      }
+    },
+    "ValueChannelPropertyChannel": {
+      "type": "object",
+      "properties": {
+        "ownerAddress": {
+          "$ref": "#/definitions/v2ServerAddress",
+          "title": "航路管理元アドレス"
+        },
+        "channelId": {
+          "type": "string",
+          "title": "航路識別子"
+        }
+      }
+    },
+    "ValueChannelVoxcelValueChannel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        }
+      }
+    },
+    "ValueChannelVoxcelValueJunction": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "connectedChannelIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "接続先の航路のchannel_id"
+        }
+      }
+    },
+    "ValueEmergencyAreaPropertyEmergencyArea": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "ValueEmergencyAreaVoxcelValueEmergencyArea": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "vacant": {
+          "type": "boolean",
+          "title": "値（デフォルトfalse）。falseはidが存在しないことと等価"
+        }
+      }
+    },
+    "ValueMicrowaveMicrowaveInfomation": {
+      "type": "object",
+      "properties": {
+        "RSI": {
+          "type": "number",
+          "format": "float",
+          "title": "電波強度"
+        }
+      }
+    },
+    "ValueMicrowavePropertyMicrowave": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "ValueMicrowaveVoxcelValueWMicrowave": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "info": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ValueMicrowaveMicrowaveInfomation"
+          },
+          "title": "電波強度関連情報。キーはキャリア事業者コード"
+        }
+      }
+    },
+    "ValueOverlayAreaPropertyOverlayArea": {
+      "type": "object",
+      "properties": {
+        "ownerAddress": {
+          "$ref": "#/definitions/v2ServerAddress",
+          "title": "管理元アドレス"
+        }
+      }
+    },
+    "ValueOverlayAreaVoxcelValueOverlayArea": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        }
+      }
+    },
+    "ValueReserveAreaPropertyReserveArea": {
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "title": "予約者のuserID"
+        },
+        "period": {
+          "$ref": "#/definitions/ValueReserveAreaReservePeriod"
+        }
+      }
+    },
+    "ValueReserveAreaReservePeriod": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "$ref": "#/definitions/v2Period",
+          "title": "予約時刻帯"
+        },
+        "occupyPeriod": {
+          "$ref": "#/definitions/ValueReserveAreaReservePeriod",
+          "title": "予約時間帯のうち占有予定時間（飛行時間）"
+        },
+        "reserveId": {
+          "type": "string",
+          "format": "int64",
+          "title": "PutReserveAreaRequestでは0。"
+        }
+      }
+    },
+    "ValueReserveAreaVoxcelValueReserveArea": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "period": {
+          "$ref": "#/definitions/ValueReserveAreaReservePeriod",
+          "title": "予約時間（プロパティと重複する場合は本パラメータが優先）"
+        }
+      }
+    },
+    "ValueRestrictedAreaPropertyRestrictedArea": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        },
+        "type": {
+          "$ref": "#/definitions/PropertyRestrictedAreaRestrictType",
+          "title": "種別"
+        }
+      }
+    },
+    "ValueRestrictedAreaVoxcelValueRestrictedArea": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        }
+      }
+    },
+    "ValueTerrainPropertyTerrain": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "ValueTerrainVoxcelValueTerrain": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "vacant": {
+          "type": "boolean",
+          "title": "値（デフォルトfalse）。falseはidが存在しないことと等価"
+        }
+      }
+    },
+    "ValueWeatherCurrentWeather": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64",
+          "title": "時刻"
+        },
+        "windDirection": {
+          "type": "number",
+          "format": "float",
+          "title": "風向(degree)"
+        },
+        "windSpeed": {
+          "type": "number",
+          "format": "float",
+          "title": "風速(kt)"
+        },
+        "cloudRate": {
+          "type": "number",
+          "format": "float",
+          "title": "雲の割合(%)"
+        },
+        "temperature": {
+          "type": "number",
+          "format": "float",
+          "title": "気温（°C）"
+        },
+        "dewPoint": {
+          "type": "number",
+          "format": "float",
+          "title": "露点温度（°C）"
+        },
+        "pressure": {
+          "type": "number",
+          "format": "float",
+          "title": "気圧(hPa)"
+        },
+        "precipitation": {
+          "type": "number",
+          "format": "float",
+          "title": "降水量（mm/h）"
+        },
+        "gggg": {
+          "type": "string",
+          "title": "運航上重要な気象"
+        }
+      },
+      "title": "現況"
+    },
+    "ValueWeatherForecast": {
+      "type": "object",
+      "properties": {
+        "time": {
+          "type": "string",
+          "format": "int64",
+          "title": "時刻"
+        },
+        "windDirection": {
+          "type": "number",
+          "format": "float",
+          "title": "風向(degree)"
+        },
+        "windSpeed": {
+          "type": "number",
+          "format": "float",
+          "title": "風速(kt)"
+        },
+        "cloudRate": {
+          "type": "number",
+          "format": "float",
+          "title": "雲の割合(%)"
+        },
+        "precipitation": {
+          "type": "number",
+          "format": "float",
+          "title": "降水量（mm/h）"
+        }
+      },
+      "title": "予報"
+    },
+    "ValueWeatherPropertyWeather": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "type": "string",
+          "title": "素となる情報へのリンク"
+        }
+      }
+    },
+    "ValueWeatherVoxcelValueWeather": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "空間ID"
+        },
+        "currentWeather": {
+          "$ref": "#/definitions/ValueWeatherCurrentWeather",
+          "title": "現況"
+        },
+        "forecast": {
+          "$ref": "#/definitions/ValueWeatherForecast",
+          "title": "予報"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2AirspaceArrangement": {
+      "type": "object",
+      "properties": {
+        "outofSpace": {
+          "$ref": "#/definitions/v2SpatialIdentifications",
+          "title": "当該SDSP_UASの管理外の領域およびオーバーレイ領域"
+        },
+        "flyableSpace": {
+          "$ref": "#/definitions/v2SpatialIdentifications",
+          "title": "指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。"
+        },
+        "occupiedSpace": {
+          "$ref": "#/definitions/v2SpatialIdentifications",
+          "title": "飛行許容領域から閉塞領域に変更された領域"
+        },
+        "error": {
+          "$ref": "#/definitions/v2ErrorCode"
+        }
+      }
+    },
+    "v2DeleteObjectRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID。0の場合は新規登録。User名が一致していない場合はエラー。"
+        }
+      }
+    },
+    "v2DeleteObjectResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "$ref": "#/definitions/v2ErrorCode"
+        }
+      }
+    },
+    "v2ErrorCode": {
+      "type": "string",
+      "enum": [
+        "ErrorCode_UNSPECIFIED",
+        "ErrorCode_Duplicate",
+        "ErrorCode_AccessDeny"
+      ],
+      "default": "ErrorCode_UNSPECIFIED",
+      "description": "- ErrorCode_Duplicate: 重複\n - ErrorCode_AccessDeny: アクセス権限なし",
+      "title": "エラーコード"
+    },
+    "v2GetObjectRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録IDの空間ID属性値を得る"
+        }
+      },
+      "title": "GetObject入力パラメータ定義"
+    },
+    "v2GetValueRequest": {
+      "type": "object",
+      "properties": {
+        "figure": {
+          "$ref": "#/definitions/v2SpatialFigure",
+          "title": "取得する領域"
+        },
+        "requestType": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/v2ObjectType"
+          },
+          "title": "取得するオブジェクトのタイプ。バリアへの対応はオプション。"
+        }
+      }
+    },
+    "v2Object": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "voxels": {
+          "$ref": "#/definitions/v2Voxels",
+          "title": "大量のボクセルが存在する場合はstreamで分割される"
+        }
+      }
+    },
+    "v2ObjectType": {
+      "type": "string",
+      "enum": [
+        "OBJECT_TYPE_UNSPECIFIED",
+        "TERRAIN",
+        "BUILDING",
+        "RESTRICTED_AREA",
+        "EMERGENCY_AREA",
+        "RESERVE_AREA",
+        "CHANNEL",
+        "OVERLAY_AREA",
+        "WEATHER",
+        "MICROWAVE"
+      ],
+      "default": "OBJECT_TYPE_UNSPECIFIED",
+      "description": "- TERRAIN: 地形（バリア）\n - BUILDING: 建物（バリア）\n - RESTRICTED_AREA: 飛行制限空域（飛行空域）\n - EMERGENCY_AREA: 緊急用務空域（飛行空域）\n - RESERVE_AREA: 飛行計画空域（飛行空域）\n - CHANNEL: 航路エリア（飛行空域）\n - OVERLAY_AREA: 他システム（SDSPやUSS）で管理される空域\n - WEATHER: 気象\n - MICROWAVE: 電波強度",
+      "title": "地物の種類"
+    },
+    "v2Objects": {
+      "type": "object",
+      "properties": {
+        "objects": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2Object"
+          }
+        }
+      }
+    },
+    "v2Period": {
+      "type": "object",
+      "properties": {
+        "startTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "開始時刻 UNIX Time (UTC sec)"
+        },
+        "endTime": {
+          "type": "string",
+          "format": "int64",
+          "title": "終了時刻 UNIX Time (UTC sec)"
+        }
+      },
+      "title": "期間"
+    },
+    "v2Point": {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "title": "WGS84"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "title": "WGS84"
+        },
+        "altitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "altitudeAttribute": {
+          "$ref": "#/definitions/PointAltitudeAttribute"
+        }
+      },
+      "title": "座標情報"
+    },
+    "v2PutObjectRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID。0の場合は新規登録。User名が一致していない場合はエラー。"
+        },
+        "overwrite": {
+          "type": "boolean",
+          "title": "trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。"
+        },
+        "voxels": {
+          "$ref": "#/definitions/v2Voxels"
+        }
+      }
+    },
+    "v2PutObjectResponse": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID"
+        },
+        "error": {
+          "$ref": "#/definitions/v2ErrorCode"
+        }
+      },
+      "title": "設定できるエリアの種別（AirspaceInfo）はユーザ権限による"
+    },
+    "v2PutReserveAreaRequest": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID。0の場合は新規登録。User名が一致していない場合はエラー。"
+        },
+        "overwrite": {
+          "type": "boolean",
+          "title": "trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。"
+        },
+        "area": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v2ValueReserveArea"
+          },
+          "title": "設定するエリア。"
+        }
+      }
+    },
+    "v2PutReserveAreaResponse": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "登録ID"
+        },
+        "error": {
+          "$ref": "#/definitions/v2ErrorCode"
+        }
+      }
+    },
+    "v2SelectAirspaceArrangementRequest": {
+      "type": "object",
+      "properties": {
+        "figure": {
+          "$ref": "#/definitions/v2SpatialFigure",
+          "title": "取得する領域"
+        },
+        "period": {
+          "$ref": "#/definitions/v2Period",
+          "title": "取得する時間帯"
+        },
+        "includeReserveArea": {
+          "type": "boolean",
+          "title": "trueで飛行計画で予約されたエリアやルートも除外する。trueへの対応はオプショナル。"
+        }
+      },
+      "title": "SelectAirspaceArrangement入力パラメータ定義\nユーザ追加は要素番号30以降を利用すること"
+    },
+    "v2SelectAirspaceArrangementResponse": {
+      "type": "object",
+      "properties": {
+        "outofSpace": {
+          "$ref": "#/definitions/v2SpatialIdentifications",
+          "title": "当該SDSP_UASの管理外の領域およびオーバーレイ領域"
+        },
+        "flyableSpace": {
+          "$ref": "#/definitions/v2SpatialIdentifications",
+          "title": "飛行許容領域"
+        },
+        "error": {
+          "$ref": "#/definitions/v2ErrorCode"
+        }
+      }
+    },
+    "v2ServerAddress": {
+      "type": "object",
+      "properties": {
+        "grpc": {
+          "type": "string",
+          "title": "gRPCサーバーアドレスおよびポート"
+        },
+        "rest": {
+          "type": "string",
+          "title": "RESTサーバーベースURL"
+        },
+        "other": {
+          "type": "string",
+          "title": "その他形式"
+        }
+      },
+      "title": "管理サーバーアドレス"
+    },
+    "v2SpatialFigure": {
+      "type": "object",
+      "properties": {
+        "identification": {
+          "$ref": "#/definitions/v2SpatialIdentification",
+          "title": "[oneof figure]"
+        },
+        "tube": {
+          "$ref": "#/definitions/SpatialFigureTube",
+          "title": "[oneof figure]"
+        },
+        "polygon": {
+          "$ref": "#/definitions/SpatialFigurePolygon",
+          "title": "[oneof figure]"
+        }
+      },
+      "title": "エリアや空間の領域の指定"
+    },
+    "v2SpatialIdentification": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string",
+          "title": "z/f/x/y"
+        }
+      },
+      "title": "空間ID"
+    },
+    "v2SpatialIdentifications": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "z/f/x/y"
+        }
+      },
+      "title": "空間ID"
+    },
+    "v2ValueBuilding": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueBuildingPropertyBuilding",
+          "title": "建物オブジェクトの値（プロパティ）"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueBuildingVoxcelValueBuilding"
+          },
+          "title": "建物オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "建物オブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueChannel": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueChannelPropertyChannel",
+          "title": "飛行計画空域オブジェクトの値（プロパティ）。PutReserveAreaRequestでは必須。"
+        },
+        "channelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueChannelVoxcelValueChannel"
+          },
+          "title": "飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。"
+        },
+        "junctionValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueChannelVoxcelValueJunction"
+          },
+          "title": "他航路との接続点。空間IDを含む。"
+        }
+      },
+      "title": "航路エリアオブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueEmergencyArea": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueEmergencyAreaPropertyEmergencyArea",
+          "title": "緊急用務空域オブジェクトの値（プロパティ）"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueEmergencyAreaVoxcelValueEmergencyArea"
+          },
+          "title": "緊急用務空域オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "緊急用務空域オブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueMicrowave": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueMicrowavePropertyMicrowave",
+          "title": "/電波強度オブジェクトの値（プロパティ）。PutReserveAreaRequestでは必須。"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueMicrowaveVoxcelValueWMicrowave"
+          },
+          "title": "/電波強度エリアオブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "電波強度オブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueOverlayArea": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueOverlayAreaPropertyOverlayArea",
+          "title": "/他システム管理エリアオブジェクトの値（プロパティ）。PutReserveAreaRequestでは必須。"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueOverlayAreaVoxcelValueOverlayArea"
+          },
+          "title": "/他システム管理エリアオブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "他システム管理エリアオブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueReserveArea": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueReserveAreaPropertyReserveArea",
+          "title": "飛行計画空域オブジェクトの値（プロパティ）。PutReserveAreaRequestでは必須。"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueReserveAreaVoxcelValueReserveArea"
+          },
+          "title": "飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "飛行計画空域オブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueRestrictedArea": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueRestrictedAreaPropertyRestrictedArea",
+          "title": "飛行制限空域オブジェクトの値（プロパティ）"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueRestrictedAreaVoxcelValueRestrictedArea"
+          },
+          "title": "飛行制限空域オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "飛行制限空域の値。空間IDを含む。"
+    },
+    "v2ValueTerrain": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueTerrainPropertyTerrain",
+          "title": "地形オブジェクトの値（プロパティ）"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueTerrainVoxcelValueTerrain"
+          },
+          "title": "地形オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "地形オブジェクトの値。空間IDを含む。"
+    },
+    "v2ValueWeather": {
+      "type": "object",
+      "properties": {
+        "property": {
+          "$ref": "#/definitions/ValueWeatherPropertyWeather",
+          "title": "/気象オブジェクトの値（プロパティ）。PutReserveAreaRequestでは必須。"
+        },
+        "voxcelValues": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/ValueWeatherVoxcelValueWeather"
+          },
+          "title": "/気象オブジェクトを構成するボクセルの値。空間IDを含む。"
+        }
+      },
+      "title": "気象オブジェクトの値。空間IDを含む。"
+    },
+    "v2Voxels": {
+      "type": "object",
+      "properties": {
+        "terrain": {
+          "$ref": "#/definitions/v2ValueTerrain",
+          "title": "[oneof object] 地形"
+        },
+        "bulding": {
+          "$ref": "#/definitions/v2ValueBuilding",
+          "title": "[oneof object] 建物"
+        },
+        "restrictedArea": {
+          "$ref": "#/definitions/v2ValueRestrictedArea",
+          "title": "[oneof object] 飛行制限空域"
+        },
+        "emergencyArea": {
+          "$ref": "#/definitions/v2ValueEmergencyArea",
+          "title": "[oneof object] 緊急用務空域"
+        },
+        "reserveArea": {
+          "$ref": "#/definitions/v2ValueReserveArea",
+          "title": "[oneof object] 飛行計画空域"
+        },
+        "channel": {
+          "$ref": "#/definitions/v2ValueChannel",
+          "title": "[oneof object] 航路エリア"
+        },
+        "overlayArea": {
+          "$ref": "#/definitions/v2ValueOverlayArea",
+          "title": "[oneof object] 他システム管理エリア"
+        },
+        "weather": {
+          "$ref": "#/definitions/v2ValueWeather",
+          "title": "[oneof object] 気象"
+        },
+        "microwave": {
+          "$ref": "#/definitions/v2ValueMicrowave",
+          "title": "[oneof object] 電波強度"
+        }
+      }
+    }
+  }
+}

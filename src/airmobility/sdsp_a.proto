@@ -1,0 +1,370 @@
+syntax = "proto3";
+
+// プロダクト名：UAS AirMobility API
+// パッケージ名：uas.airmobility.v2
+// インタフェース名：uas.airmobility.v2.AirMobilityAPI
+
+package uas.airmobility.v2 ;
+
+option go_package = "github.com/ouranos-gex/ouranos-gex-api/proto_go/airmobility" ;
+
+import "airmobility/object_a.proto" ;
+import "generic/sdsp_g.proto" ;
+
+// エアモビリティ向け空間情報基盤
+// GenericAPIのConnectServerで得たトークンをheaderにuseridと共に設定する
+service AirMobilityAPI {
+    // 空間情報登録
+    //
+    // オブジェクトを空間ID群で登録する。
+    rpc PutObject(PutObjectRequest) returns (PutObjectResponse){} 
+
+    // 空間情報取得
+    //
+    // オブジェクトの値を得る
+    rpc GetObject(GetObjectRequest) returns (stream Object){} 
+
+    // オブジェクト取得
+    //
+    // 指定した領域に含まれるオブジェクトを得る。
+    //rpc SelectObjects(SelectObjectsRequest) returns (SelectObjectsResponse){} 
+    
+    // 空間情報削除
+    //
+    // 空間情報を削除する。
+    rpc DeleteObject(DeleteObjectRequest) returns (DeleteObjectResponse){} 
+
+    // 指定領域空間情報取得
+    //
+    // 指定した領域のリスク値などの空間情報の値を得る。
+    rpc GetValue(GetValueRequest) returns (stream Objects){} 
+
+    // 飛行計画登録（予約）
+    //
+    // 飛行計画（各種形状の空域空間）を空間ID群で登録する。
+    // 重複はエラー
+    rpc PutReserveArea(PutReserveAreaRequest) returns (PutReserveAreaResponse){} 
+
+    // 飛行許容空域取得
+    //
+    // 指定した領域および時刻を指定し、飛行許容領域の空間ID群を得る。
+    // 空域空間の値の取得にはGetValue()を利用する。
+    // 飛行許容領域は下記を含まない領域
+    //・バリア
+    //・飛行制限空域
+    //・緊急用務空域
+    //・飛行計画空域
+    //・オーバーレイ
+    rpc SelectAirspaceArrangement(SelectAirspaceArrangementRequest) returns (SelectAirspaceArrangementResponse){} 
+
+    // 飛行許容空域取得（ストリーム）
+    //
+    // 指定した領域および時刻で飛行可能な空域空間の空間ID群をストリームで得る。
+    // 次のようなケースに利用する。
+    // ・大量のデータを分割して取得
+    // ・変化を取得
+    rpc SelectAirspaceArrangementStream(SelectAirspaceArrangementRequest) returns (stream AirspaceArrangement){}   
+
+
+    /*
+    // 空間情報取得（ストリーム）
+    //
+    // リスク値などの空間情報の値を得る。
+    rpc GetValueStream(GetValueRequest) returns (stream GetValueResponse){} 
+   */ 
+}
+
+message PutObjectRequest{ 
+    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+    bool overwrite = 2 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
+    Voxels voxels = 3 ;
+}
+
+message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
+    int64 object_id = 1 ; // 登録ID
+    ErrorCode error = 20 ;
+}
+
+// GetObject入力パラメータ定義
+message GetObjectRequest {
+    int64 object_id = 1 ; // 登録IDの空間ID属性値を得る
+}
+
+message DeleteObjectRequest {
+    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+}
+
+message DeleteObjectResponse {
+    ErrorCode error = 20 ;
+}
+
+message GetValueRequest {
+    generic.v2.SpatialFigure figure = 1 ; // 取得する領域
+    repeated ObjectType request_type = 2 ; // 取得するオブジェクトのタイプ。バリアへの対応はオプション。
+}
+
+message GetValueResponse {
+    repeated uas.airmobility.v2.Objects values = 1 ; 
+    ErrorCode error = 20 ;
+}
+
+message PutReserveAreaRequest{
+    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+    bool overwrite = 2 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
+    repeated ValueReserveArea area = 3 ; // 設定するエリア。
+}
+
+message PutReserveAreaResponse {
+    int64 object_id = 1 ; // 登録ID
+    ErrorCode error = 20 ;
+}
+
+
+message SelectObjectRequest{ // 指定エリア内に存在するオブジェクトを返す
+    repeated generic.v2.SpatialFigure area = 1 ; // 指定エリア。
+    ObjectType type = 2 ; // 取得する地物の種類。バリアへの対応はオプション。
+
+    bool with_forecast_weather = 10 ; // 天気予報情報を取得する
+    bool with_current_weather = 11 ; // 現在の天候情報を取得する
+    optional string microwave_carrier_code = 12 ; // 指定したキャリアの電波強度を取得する
+}
+
+message SelectObjectResponse{ // 指定エリア内に存在するオブジェクト
+    message FlyableArea {
+        generic.v2.SpatialIdentification id = 1 ; // 空間ID
+
+        optional uas.airmobility.v2.ValueWeather.CurrentWeather current_weather = 10 ; // 現況
+        optional uas.airmobility.v2.ValueWeather.Forecast forecast = 11 ; // 予報
+        optional uas.airmobility.v2.ValueMicrowave.MicrowaveInfomation microwave = 12 ; // 電波強度
+    }
+    repeated FlyableArea object_id = 1 ;
+}
+
+/*
+message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
+    int64 object_id = 1 ; // 登録ID
+    ErrorCode error = 20 ;
+}
+*/
+
+// DeleteRequest入力パラメータ定義
+// ユーザ追加は要素番号30以降を利用すること
+message DeleteRequest {
+    repeated int64 object_id = 1 ; // リクエストしたUserIDが登録したUserIDと不一致の場合はエラー。
+}
+
+/*
+// PutReserveArea入力パラメータ定義
+// ユーザ追加は要素番号30以降を利用すること
+message PutReserveAreaRequest{ 
+    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。既存のIDではオーバーライト、User名が一致していない場合はエラー。予約が重複しているとエラー。
+    repeated SpatialFigure area = 2 ; // 設定するエリア。
+    ReserveAreaValue value = 3 ; // 予約空域（飛行計画予約）
+}
+*/
+
+// SelectAirspaceArrangement入力パラメータ定義
+// ユーザ追加は要素番号30以降を利用すること
+message SelectAirspaceArrangementRequest {
+    generic.v2.SpatialFigure figure = 1 ; // 取得する領域
+    generic.v2.Period period = 2 ; // 取得する時間帯
+    bool include_reserve_area = 3 ; // trueで飛行計画で予約されたエリアやルートも除外する。trueへの対応はオプショナル。
+}
+
+message SelectAirspaceArrangementResponse {   
+    generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+    generic.v2.SpatialIdentifications flyable_space = 2; // 飛行許容領域
+    ErrorCode error = 20 ;
+}
+
+message AirspaceArrangement {
+    oneof info {
+        generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+        generic.v2.SpatialIdentifications flyable_space = 2 ; // 指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。
+        generic.v2.SpatialIdentifications occupied_space = 3 ; // 飛行許容領域から閉塞領域に変更された領域
+        ErrorCode error = 20 ;
+    }
+}
+
+/*
+// SelectAirspaceRequest入力パラメータ定義
+// ユーザ追加は要素番号30以降を利用すること
+message SelectAirspaceRequest {
+    repeated generic.v2.SpatialFigure area = 1 ; // 対象エリア。指定がない場合はユーザーが登録したエリアすべて（飛行計画予約含む）。
+}
+
+// SelectAirspaceRequest出力パラメータ定義
+// ユーザ追加は要素番号30以降を利用すること
+message SelectAirspaceResponse {
+    repeated int64 object_id = 1 ; // 登録ID。
+    ErrorCode error = 20 ;
+}
+*/
+
+// エラーコード
+enum ErrorCode {
+    ErrorCode_UNSPECIFIED = 0 ;
+    ErrorCode_Duplicate = 1 ; // 重複
+    ErrorCode_AccessDeny = 2 ; // アクセス権限なし
+}
+
+/*
+// エリアや空間の領域の指定
+message SpatialFigure {
+    oneof figure { 
+        SpatialIdentifier.Common.Protocol.SpatialIdentification identification = 1 ; // [oneof figure]
+        Tube tube = 2 ; // [oneof figure]
+        Polygon polygon = 3 ;// [oneof figure]
+    }
+
+    message Tube { // 角柱形状
+        SpatialIdentifier.Common.Protocol.Point start = 1 ; // 始点座標
+        SpatialIdentifier.Common.Protocol.Point end = 2 ; // 終点座標
+        float radian = 3 ; // 1辺長(m)
+    }
+
+    message Polygon { // 多角形（表現形式検討中）
+    }
+}
+
+// 空間IDの値
+message SpatialIdentifierInformation {
+    SpatialIdentifier.Common.Protocol.SpatialIdentification identification = 1 ; // 空間ID
+    SpatialValue value = 2 ; // 空間情報
+}
+
+message SpatialValue {
+    oneof infomation {
+        PhysicalBarrierValue barrier = 1 ; // [oneof infomation] バリア
+        //WeatherValue wether = 2 ; //  [oneof infomation]　用語見直しにより飛行空域に含める。
+        AirspaceValue airspace = 2 ; // [oneof infomation] 飛行空域
+        //ReserveAreaValue reserve_area = 4 ; // [oneof infomation]
+    }
+
+    RiskValue risk = 10 ;
+    message RiskValue {
+        float risk = 1 ; //　リスク値。オプショナル。
+    }
+}
+
+
+
+// 物標。地上の物理的な障害物
+// 空域のバリア（ロジカルなバリア）はAirspaceで定義する。
+message PhysicalBarrierValue {
+    SpatialIdentifier.Common.Protocol.Period period = 2 ; // 有効期間
+
+    oneof barrier_info {
+        Terrain terrain = 3 ; // 地形 [oneof barrier_info]
+        Building building = 4 ; // 建物 [oneof barrier_info]
+        //Airspace Airspace = 5 ; // 空域
+        //ローカルエリア属性。ユーザアクセス権限を考慮。
+    }
+
+    message Terrain {
+        TerrainAttribute attr = 1 ;
+        string reference = 2 ; // 素となる情報へのリンク　
+
+        enum TerrainAttribute{ // 
+            BUILDING = 0 ; // 地表面または地下を含まない。利用されることはない（GetValueRequest()でBARRIERが指定された際には建物を含まないバリア情報は返らない）。
+            INCLUDE_GROUND = 1 ; // 地面（地表面および地下）
+            UNDER_GROUND = 2 ; // ボクセル全体が地下（地表面と地下の識別が可能な場合）
+        }
+    }
+
+    message Building {
+        BuildingDefAttribute attr = 1 ;
+        string reference = 4 ; // 素となる情報へのリンク　
+
+        enum BuildingDefAttribute{ 
+            WITHOUT_BUILDING = 0 ;// 建物等を含まない。利用されることはない（GetValueRequest()でBARRIERが指定された際には建物を含まないバリア情報は返らない）。
+            INCLUDE_BUILDING = 1 ;// 建物を含む。（境界もしくは建物内）
+            INSIDE_BUILDING = 2 ;// ボクセル全体が建物内（教会と建物内の識別が可能な場合）
+        }
+    }
+}
+
+// 飛行空域の情報
+message AirspaceValue {
+    oneof Airspace_info {
+        RestrictedArea restricted_area = 1 ; // [oneof Airspace_info] 飛行制限空域
+        EmergencyArea emergency_area = 2 ; // [oneof Airspace_info] 緊急用務空域
+        ReserveAreaValue reserve_area = 3 ; // [oneof Airspace_info] 飛行計画
+        OverlayAreaValue overlay_area = 4 ; // [oneof Airspace_info] オーバレイ空域（他のSDSPで管理される空域）
+        WeatherValue weather = 5 ; // [oneof Airspace_info] 気象情報（オプショナル）
+    }
+
+    message RestrictedArea {
+        RestrictedAreaAttribute attr = 1 ;       
+        string reference = 2 ; // 素となる情報へのリンク　
+
+        enum RestrictedAreaAttribute{
+            FREE = 0 ; // 制限なし。利用されることはない（PutAirspaceArrangementRequest()では設定せずDeleteを利用する,GetValuetResponse()でFreeの場合は空間IDは返却されない）
+            P = 1 ; // 飛行禁止
+            R = 2 ; // 飛行制限
+            K = 3 ; // 訓練等空域
+            N = 4; // 一時制限
+        }
+    }
+
+    // 緊急用務空域
+    message EmergencyArea {
+        string reference = 1 ; // 素となる情報へのリンク
+    }
+
+    // オーバーレイ空域
+    message OverlayAreaValue {
+        string sdsp_address = 1 ; // 別のSDSPのアドレス
+    }
+
+}
+
+
+// 気象（2次元表現化については課題）
+message WeatherValue {
+    oneof weather_info {
+        CurrentWeather current_weather = 1 ; // [oneof weather_info]
+        Forecast forecast = 2 ; // [oneof weather_info]
+    }
+
+    // 現況
+    message CurrentWeather { // 無効データの表現方法は課題
+        int64 time = 1 ; // 時刻
+        float wind_direction = 2 ; // 風向(degree)
+        float wind_speed = 3 ; // 風速(kt)
+        float cloud_rate = 4 ; // 雲の割合(%)
+        float temperature = 5 ; // 気温（°C）
+        float dew_point = 6 ; // 露点温度（°C）
+        float pressure = 7 ; // 気圧(hPa)
+        float precipitation = 8 ; // 降水量（mm/h）
+        string gggg = 20 ; // 運航上重要な気象
+    }
+
+    // 予報
+    message Forecast {
+        int64 time = 1 ; // 時刻
+        float wind_direction = 2 ; // 風向(degree)
+        float wind_speed = 3 ; // 風速(kt)
+        float cloud_rate = 4 ; // 雲の割合(%)
+        float precipitation = 8 ; // 降水量（mm/h）
+    }
+}
+
+
+
+// 飛行計画
+message ReserveAreaValue {
+    SpatialIdentifier.Common.Protocol.Period period = 1 ; // 有効期間
+    string reference = 2 ; // 素となる情報へのリンク
+}
+
+// 検討中
+message MicroWave {
+    float RSI = 1  ;// 電波強度
+}
+
+// 検討中
+message GroundRisk {
+    float risk = 1 ; //　リスク値
+}
+*/

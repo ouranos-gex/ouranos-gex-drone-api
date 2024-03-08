@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+// プロダクト名：Generic API
+// パッケージ名：generic.v2
+// インタフェース名：generic.v2.GenericAPI
+
+package generic.v2 ;
+
+option go_package = "github.com/ouranos-gex/ouranos-gex-api/proto_go/generic" ;
+
+service GenericAPI {
+    // サーバー接続（ログイン）
+    // ユーザIDとパスワードでトークンを得る
+    rpc ConnectServer(ConnectServerRequest) returns(Token){} // アクセストークン取得
+}
+
+message SpatialIdentification { // 空間ID
+    string ID = 1 ; // z/f/x/y
+}
+
+message SpatialIdentifications { // 空間ID
+    repeated string ID = 1 ; // z/f/x/y
+}
+
+
+message Point { // 座標情報
+    double latitude = 1; // WGS84
+    double longitude = 2; // WGS84
+    float altitude = 3;
+    AltitudeAttribute altitude_attribute = 4;
+
+    enum AltitudeAttribute {
+        ALTITUDE_ATTRIBUTE_ELIPSOIDE = 0; // 楕円球体面高（当面対象外）
+        ALTITUDE_ATTRIBUTE_MSL = 1; // ジオイド高
+        ALTITUDE_ATTRIBUTE_AGL = 2; // 地上高（当面対象外）
+    }
+}
+
+message ConnectServerRequest {
+    oneof Identification {
+        string userID = 1; // ユーザID
+        string organizationID = 2; // 組織ID
+    }
+    string password = 8;
+}
+
+message Token{
+    enum Code {
+        COMPLETE = 0; // ログイン成功
+        INVALID = 3; // パスワードが無効
+        UNAVAILABLE_UAV = 4; // 許容されない機体（他組織など）
+        INTERNAL_ERROR = 10;
+    }
+    Code result = 1;
+    string token = 2;
+}
+
+message OptionalSpatialIdentification {
+    bool has_value = 1; // 値を持っているか否か
+    SpatialIdentification spatial_id = 2; // 空間ID
+}
+
+message Period { // 期間
+    int64 start_time = 1 ; // 開始時刻 UNIX Time (UTC sec)
+    int64 end_time = 2 ; // 終了時刻 UNIX Time (UTC sec)
+}
+
+// エリアや空間の領域の指定
+message SpatialFigure {
+    oneof figure { 
+        SpatialIdentification identification = 1 ; // [oneof figure]
+        Tube tube = 2 ; // [oneof figure]
+        Polygon polygon = 3 ;// [oneof figure]
+    }
+
+    message Tube { // 角柱形状
+        Point start = 1 ; // 始点座標
+        Point end = 2 ; // 終点座標
+        float radian = 3 ; // 1辺長(m)
+    }
+
+    message Polygon { // 多角形（表現形式検討中）
+    }
+}
+
+// 管理サーバーアドレス
+message ServerAddress {
+    oneof address {
+        string grpc = 1 ; // gRPCサーバーアドレスおよびポート
+        string rest = 2 ; // RESTサーバーベースURL
+        string other = 10 ; // その他形式 
+    }
+}

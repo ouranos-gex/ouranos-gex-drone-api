@@ -1,0 +1,121 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "sdsp_g.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "GenericAPI"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/gen/api/generic/v2/connect-server": {
+      "post": {
+        "summary": "サーバー接続（ログイン）\nユーザIDとパスワードでトークンを得る",
+        "operationId": "GenericAPI_ConnectServer",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v2Token"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v2ConnectServerRequest"
+            }
+          }
+        ],
+        "tags": [
+          "GenericAPI"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "TokenCode": {
+      "type": "string",
+      "enum": [
+        "COMPLETE",
+        "INVALID",
+        "UNAVAILABLE_UAV",
+        "INTERNAL_ERROR"
+      ],
+      "default": "COMPLETE",
+      "title": "- COMPLETE: ログイン成功\n - INVALID: パスワードが無効\n - UNAVAILABLE_UAV: 許容されない機体（他組織など）"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v2ConnectServerRequest": {
+      "type": "object",
+      "properties": {
+        "userID": {
+          "type": "string",
+          "title": "ユーザID"
+        },
+        "organizationID": {
+          "type": "string",
+          "title": "組織ID"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "v2Token": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/TokenCode"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
