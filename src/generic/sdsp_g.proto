@@ -30,7 +30,7 @@ message Point { // 座標情報
     AltitudeAttribute altitude_attribute = 4;
 
     enum AltitudeAttribute {
-        ALTITUDE_ATTRIBUTE_ELIPSOIDE = 0; // 楕円球体面高（当面対象外）
+        ALTITUDE_ATTRIBUTE_ELLIPSOID = 0; // 楕円球体面高（当面対象外）
         ALTITUDE_ATTRIBUTE_MSL = 1; // ジオイド高
         ALTITUDE_ATTRIBUTE_AGL = 2; // 地上高（当面対象外）
     }

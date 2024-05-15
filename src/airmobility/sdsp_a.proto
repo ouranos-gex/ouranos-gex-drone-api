@@ -135,7 +135,7 @@ message SelectObjectResponse{ // 指定エリア内に存在するオブジェ�
 
         optional uas.airmobility.v2.ValueWeather.CurrentWeather current_weather = 10 ; // 現況
         optional uas.airmobility.v2.ValueWeather.Forecast forecast = 11 ; // 予報
-        optional uas.airmobility.v2.ValueMicrowave.MicrowaveInfomation microwave = 12 ; // 電波強度
+        optional uas.airmobility.v2.ValueMicrowave.MicrowaveInformation microwave = 12 ; // 電波強度
     }
     repeated FlyableArea object_id = 1 ;
 }
@@ -172,14 +172,14 @@ message SelectAirspaceArrangementRequest {
 }
 
 message SelectAirspaceArrangementResponse {   
-    generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+    generic.v2.SpatialIdentifications out_of_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
     generic.v2.SpatialIdentifications flyable_space = 2; // 飛行許容領域
     ErrorCode error = 20 ;
 }
 
 message AirspaceArrangement {
-    oneof info {
-        generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+    oneof information {
+        generic.v2.SpatialIdentifications out_of_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
         generic.v2.SpatialIdentifications flyable_space = 2 ; // 指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。
         generic.v2.SpatialIdentifications occupied_space = 3 ; // 飛行許容領域から閉塞領域に変更された領域
         ErrorCode error = 20 ;
@@ -234,7 +234,7 @@ message SpatialIdentifierInformation {
 }
 
 message SpatialValue {
-    oneof infomation {
+    oneof information {
         PhysicalBarrierValue barrier = 1 ; // [oneof infomation] バリア
         //WeatherValue wether = 2 ; //  [oneof infomation]　用語見直しにより飛行空域に含める。
         AirspaceValue airspace = 2 ; // [oneof infomation] 飛行空域
@@ -262,7 +262,7 @@ message PhysicalBarrierValue {
     }
 
     message Terrain {
-        TerrainAttribute attr = 1 ;
+        TerrainAttribute attribute = 1 ;
         string reference = 2 ; // 素となる情報へのリンク　
 
         enum TerrainAttribute{ // 
@@ -273,7 +273,7 @@ message PhysicalBarrierValue {
     }
 
     message Building {
-        BuildingDefAttribute attr = 1 ;
+        BuildingDefAttribute attribute = 1 ;
         string reference = 4 ; // 素となる情報へのリンク　
 
         enum BuildingDefAttribute{ 
@@ -286,7 +286,7 @@ message PhysicalBarrierValue {
 
 // 飛行空域の情報
 message AirspaceValue {
-    oneof Airspace_info {
+    oneof airspace_information {
         RestrictedArea restricted_area = 1 ; // [oneof Airspace_info] 飛行制限空域
         EmergencyArea emergency_area = 2 ; // [oneof Airspace_info] 緊急用務空域
         ReserveAreaValue reserve_area = 3 ; // [oneof Airspace_info] 飛行計画
@@ -295,7 +295,7 @@ message AirspaceValue {
     }
 
     message RestrictedArea {
-        RestrictedAreaAttribute attr = 1 ;       
+        RestrictedAreaAttribute attribute = 1 ;       
         string reference = 2 ; // 素となる情報へのリンク　
 
         enum RestrictedAreaAttribute{
@@ -331,7 +331,7 @@ message WeatherValue {
     message CurrentWeather { // 無効データの表現方法は課題
         int64 time = 1 ; // 時刻
         float wind_direction = 2 ; // 風向(degree)
-        float wind_speed = 3 ; // 風速(kt)
+        float wind_speed = 3 ; // 風速(knot)
         float cloud_rate = 4 ; // 雲の割合(%)
         float temperature = 5 ; // 気温（°C）
         float dew_point = 6 ; // 露点温度（°C）
@@ -344,7 +344,7 @@ message WeatherValue {
     message Forecast {
         int64 time = 1 ; // 時刻
         float wind_direction = 2 ; // 風向(degree)
-        float wind_speed = 3 ; // 風速(kt)
+        float wind_speed = 3 ; // 風速(knot)
         float cloud_rate = 4 ; // 雲の割合(%)
         float precipitation = 8 ; // 降水量（mm/h）
     }
