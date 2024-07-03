@@ -16,7 +16,7 @@
     "application/json"
   ],
   "paths": {
-    "/gen/api/generic/v2/connect-server": {
+    "/gen/api/generic/v3/connect-server": {
       "post": {
         "summary": "サーバー接続（ログイン）\nユーザIDとパスワードでトークンを得る",
         "operationId": "GenericAPI_ConnectServer",
@@ -24,7 +24,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v2Token"
+              "$ref": "#/definitions/v3Token"
             }
           },
           "default": {
@@ -40,7 +40,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v2ConnectServerRequest"
+              "$ref": "#/definitions/v3ConnectServerRequest"
             }
           }
         ],
@@ -84,13 +84,12 @@
         "details": {
           "type": "array",
           "items": {
-            "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
         }
       }
     },
-    "v2ConnectServerRequest": {
+    "v3ConnectServerRequest": {
       "type": "object",
       "properties": {
         "userID": {
@@ -106,7 +105,7 @@
         }
       }
     },
-    "v2Token": {
+    "v3Token": {
       "type": "object",
       "properties": {
         "result": {

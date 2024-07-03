@@ -1,10 +1,10 @@
 syntax = "proto3";
 
 // プロダクト名：UAS AirMobility API
-// パッケージ名：uas.airmobility.v2
+// パッケージ名：uas.airmobility.v3
 // インタフェース名：uas.airmobility.v2.AirMobilityAPI
 
-package uas.airmobility.v2 ;
+package uas.airmobility.v3 ;
 
 option go_package = "github.com/ouranos-gex/ouranos-gex-api/proto_go/airmobility" ;
 
@@ -75,9 +75,9 @@ service AirMobilityAPI {
 }
 
 message PutObjectRequest{ 
-    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
-    bool overwrite = 2 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
-    Voxels voxels = 3 ;
+    //int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+    bool overwrite = 1 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
+    uas.airmobility.v3.Object object = 2 ;
 }
 
 message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
@@ -99,19 +99,19 @@ message DeleteObjectResponse {
 }
 
 message GetValueRequest {
-    generic.v2.SpatialFigure figure = 1 ; // 取得する領域
+    generic.v3.SpatialFigure figure = 1 ; // 取得する領域
     repeated ObjectType request_type = 2 ; // 取得するオブジェクトのタイプ。バリアへの対応はオプション。
 }
 
 message GetValueResponse {
-    repeated uas.airmobility.v2.Objects values = 1 ; 
+    repeated uas.airmobility.v3.Objects values = 1 ; 
     ErrorCode error = 20 ;
 }
 
 message PutReserveAreaRequest{
     int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
     bool overwrite = 2 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
-    repeated ValueReserveArea area = 3 ; // 設定するエリア。
+    repeated uas.airmobility.v3.VoxelValueReserveArea area = 3 ; // 設定するエリア。
 }
 
 message PutReserveAreaResponse {
@@ -121,21 +121,21 @@ message PutReserveAreaResponse {
 
 
 message SelectObjectRequest{ // 指定エリア内に存在するオブジェクトを返す
-    repeated generic.v2.SpatialFigure area = 1 ; // 指定エリア。
+    repeated generic.v3.SpatialFigure area = 1 ; // 指定エリア。
     ObjectType type = 2 ; // 取得する地物の種類。バリアへの対応はオプション。
 
     bool with_forecast_weather = 10 ; // 天気予報情報を取得する
     bool with_current_weather = 11 ; // 現在の天候情報を取得する
-    optional string microwave_carrier_code = 12 ; // 指定したキャリアの電波強度を取得する
+    optional string plmn_id = 12 ; // 指定したキャリアの電波強度を取得する
 }
 
 message SelectObjectResponse{ // 指定エリア内に存在するオブジェクト
     message FlyableArea {
-        generic.v2.SpatialIdentification id = 1 ; // 空間ID
+        generic.v3.SpatialIdentification id = 1 ; // 空間ID
 
-        optional uas.airmobility.v2.ValueWeather.CurrentWeather current_weather = 10 ; // 現況
-        optional uas.airmobility.v2.ValueWeather.Forecast forecast = 11 ; // 予報
-        optional uas.airmobility.v2.ValueMicrowave.MicrowaveInfomation microwave = 12 ; // 電波強度
+        optional uas.airmobility.v3.VoxelValueWeather.CurrentWeather current_weather = 10 ; // 現況
+        optional uas.airmobility.v3.VoxelValueWeatherForecast.Forecast forecast = 11 ; // 予報
+        optional uas.airmobility.v3.VoxelValueWMobileNetwork mobile_network = 12 ; // 電波強度
     }
     repeated FlyableArea object_id = 1 ;
 }
@@ -166,22 +166,22 @@ message PutReserveAreaRequest{
 // SelectAirspaceArrangement入力パラメータ定義
 // ユーザ追加は要素番号30以降を利用すること
 message SelectAirspaceArrangementRequest {
-    generic.v2.SpatialFigure figure = 1 ; // 取得する領域
-    generic.v2.Period period = 2 ; // 取得する時間帯
+    generic.v3.SpatialFigure figure = 1 ; // 取得する領域
+    generic.v3.Period period = 2 ; // 取得する時間帯
     bool include_reserve_area = 3 ; // trueで飛行計画で予約されたエリアやルートも除外する。trueへの対応はオプショナル。
 }
 
 message SelectAirspaceArrangementResponse {   
-    generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
-    generic.v2.SpatialIdentifications flyable_space = 2; // 飛行許容領域
+    generic.v3.SpatialIdentifications out_of_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+    generic.v3.SpatialIdentifications flyable_space = 2; // 飛行許容領域
     ErrorCode error = 20 ;
 }
 
 message AirspaceArrangement {
-    oneof info {
-        generic.v2.SpatialIdentifications outof_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
-        generic.v2.SpatialIdentifications flyable_space = 2 ; // 指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。
-        generic.v2.SpatialIdentifications occupied_space = 3 ; // 飛行許容領域から閉塞領域に変更された領域
+    oneof information {
+        generic.v3.SpatialIdentifications out_of_space = 1 ; // 当該SDSP_UASの管理外の領域およびオーバーレイ領域
+        generic.v3.SpatialIdentifications flyable_space = 2 ; // 指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。
+        generic.v3.SpatialIdentifications occupied_space = 3 ; // 飛行許容領域から閉塞領域に変更された領域
         ErrorCode error = 20 ;
     }
 }
@@ -190,7 +190,7 @@ message AirspaceArrangement {
 // SelectAirspaceRequest入力パラメータ定義
 // ユーザ追加は要素番号30以降を利用すること
 message SelectAirspaceRequest {
-    repeated generic.v2.SpatialFigure area = 1 ; // 対象エリア。指定がない場合はユーザーが登録したエリアすべて（飛行計画予約含む）。
+    repeated generic.v3.SpatialFigure area = 1 ; // 対象エリア。指定がない場合はユーザーが登録したエリアすべて（飛行計画予約含む）。
 }
 
 // SelectAirspaceRequest出力パラメータ定義
@@ -234,7 +234,7 @@ message SpatialIdentifierInformation {
 }
 
 message SpatialValue {
-    oneof infomation {
+    oneof information {
         PhysicalBarrierValue barrier = 1 ; // [oneof infomation] バリア
         //WeatherValue wether = 2 ; //  [oneof infomation]　用語見直しにより飛行空域に含める。
         AirspaceValue airspace = 2 ; // [oneof infomation] 飛行空域
@@ -262,7 +262,7 @@ message PhysicalBarrierValue {
     }
 
     message Terrain {
-        TerrainAttribute attr = 1 ;
+        TerrainAttribute attribute = 1 ;
         string reference = 2 ; // 素となる情報へのリンク　
 
         enum TerrainAttribute{ // 
@@ -273,7 +273,7 @@ message PhysicalBarrierValue {
     }
 
     message Building {
-        BuildingDefAttribute attr = 1 ;
+        BuildingDefAttribute attribute = 1 ;
         string reference = 4 ; // 素となる情報へのリンク　
 
         enum BuildingDefAttribute{ 
@@ -286,7 +286,7 @@ message PhysicalBarrierValue {
 
 // 飛行空域の情報
 message AirspaceValue {
-    oneof Airspace_info {
+    oneof airspace_information {
         RestrictedArea restricted_area = 1 ; // [oneof Airspace_info] 飛行制限空域
         EmergencyArea emergency_area = 2 ; // [oneof Airspace_info] 緊急用務空域
         ReserveAreaValue reserve_area = 3 ; // [oneof Airspace_info] 飛行計画
@@ -295,7 +295,7 @@ message AirspaceValue {
     }
 
     message RestrictedArea {
-        RestrictedAreaAttribute attr = 1 ;       
+        RestrictedAreaAttribute attribute = 1 ;       
         string reference = 2 ; // 素となる情報へのリンク　
 
         enum RestrictedAreaAttribute{
@@ -331,7 +331,7 @@ message WeatherValue {
     message CurrentWeather { // 無効データの表現方法は課題
         int64 time = 1 ; // 時刻
         float wind_direction = 2 ; // 風向(degree)
-        float wind_speed = 3 ; // 風速(kt)
+        float wind_speed = 3 ; // 風速(knot)
         float cloud_rate = 4 ; // 雲の割合(%)
         float temperature = 5 ; // 気温（°C）
         float dew_point = 6 ; // 露点温度（°C）
@@ -344,7 +344,7 @@ message WeatherValue {
     message Forecast {
         int64 time = 1 ; // 時刻
         float wind_direction = 2 ; // 風向(degree)
-        float wind_speed = 3 ; // 風速(kt)
+        float wind_speed = 3 ; // 風速(knot)
         float cloud_rate = 4 ; // 雲の割合(%)
         float precipitation = 8 ; // 降水量（mm/h）
     }

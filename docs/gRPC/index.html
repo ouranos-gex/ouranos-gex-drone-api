@@ -1,0 +1,3170 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Protocol Documentation</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic"/>
+    <style>
+      body {
+        width: 60em;
+        margin: 1em auto;
+        color: #222;
+        font-family: "Ubuntu", sans-serif;
+        padding-bottom: 4em;
+      }
+
+      h1 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      h2 {
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+        margin: 1.5em 0;
+      }
+
+      h3 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      a {
+        text-decoration: none;
+        color: #567e25;
+      }
+
+      table {
+        width: 100%;
+        font-size: 80%;
+        border-collapse: collapse;
+      }
+
+      thead {
+        font-weight: 700;
+        background-color: #dcdcdc;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5ex 2ex;
+      }
+
+      td p {
+        text-indent: 1em;
+        margin: 0;
+      }
+
+      td p:nth-child(1) {
+        text-indent: 0;  
+      }
+
+       
+      .field-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .field-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .field-table td:nth-child(3) {  
+        width: 6em;
+      }
+      .field-table td:nth-child(4) {  
+        width: auto;
+      }
+
+       
+      .extension-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(3) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(4) {  
+        width: 5em;
+      }
+      .extension-table td:nth-child(5) {  
+        width: auto;
+      }
+
+       
+      .enum-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .enum-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .enum-table td:nth-child(3) {  
+        width: auto;
+      }
+
+       
+      .scalar-value-types-table tr {
+        height: 3em;
+      }
+
+       
+      #toc-container ul {
+        list-style-type: none;
+        padding-left: 1em;
+        line-height: 180%;
+        margin: 0;
+      }
+      #toc > li > a {
+        font-weight: bold;
+      }
+
+       
+      .file-heading {
+        width: 100%;
+        display: table;
+        border-bottom: 1px solid #aaa;
+        margin: 4em 0 1.5em 0;
+      }
+      .file-heading h2 {
+        border: none;
+        display: table-cell;
+      }
+      .file-heading a {
+        text-align: right;
+        display: table-cell;
+      }
+
+       
+      .badge {
+        width: 1.6em;
+        height: 1.6em;
+        display: inline-block;
+
+        line-height: 1.6em;
+        text-align: center;
+        font-weight: bold;
+        font-size: 60%;
+
+        color: #89ba48;
+        background-color: #dff0c8;
+
+        margin: 0.5ex 1em 0.5ex -1em;
+        border: 1px solid #fbfbfb;
+        border-radius: 1ex;
+      }
+    </style>
+
+    
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+  </head>
+
+  <body>
+
+    <h1 id="title">Protocol Documentation</h1>
+
+    <h2>Table of Contents</h2>
+
+    <div id="toc-container">
+      <ul id="toc">
+        
+          
+          <li>
+            <a href="#generic%2fsdsp_g.proto">generic/sdsp_g.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#generic.v3.ConnectServerRequest"><span class="badge">M</span>ConnectServerRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.OptionalSpatialIdentification"><span class="badge">M</span>OptionalSpatialIdentification</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.Period"><span class="badge">M</span>Period</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.Point"><span class="badge">M</span>Point</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.ServerAddress"><span class="badge">M</span>ServerAddress</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.SpatialFigure"><span class="badge">M</span>SpatialFigure</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.SpatialFigure.Polygon"><span class="badge">M</span>SpatialFigure.Polygon</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.SpatialFigure.Tube"><span class="badge">M</span>SpatialFigure.Tube</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.SpatialIdentification"><span class="badge">M</span>SpatialIdentification</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.SpatialIdentifications"><span class="badge">M</span>SpatialIdentifications</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.Token"><span class="badge">M</span>Token</a>
+                </li>
+              
+              
+                <li>
+                  <a href="#generic.v3.Point.AltitudeAttribute"><span class="badge">E</span>Point.AltitudeAttribute</a>
+                </li>
+              
+                <li>
+                  <a href="#generic.v3.Token.Code"><span class="badge">E</span>Token.Code</a>
+                </li>
+              
+              
+              
+                <li>
+                  <a href="#generic.v3.GenericAPI"><span class="badge">S</span>GenericAPI</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#airmobility%2fsdsp_a.proto">airmobility/sdsp_a.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.AirspaceArrangement"><span class="badge">M</span>AirspaceArrangement</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.DeleteObjectRequest"><span class="badge">M</span>DeleteObjectRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.DeleteObjectResponse"><span class="badge">M</span>DeleteObjectResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.DeleteRequest"><span class="badge">M</span>DeleteRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.GetObjectRequest"><span class="badge">M</span>GetObjectRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.GetValueRequest"><span class="badge">M</span>GetValueRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.GetValueResponse"><span class="badge">M</span>GetValueResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.PutObjectRequest"><span class="badge">M</span>PutObjectRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.PutObjectResponse"><span class="badge">M</span>PutObjectResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.PutReserveAreaRequest"><span class="badge">M</span>PutReserveAreaRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.PutReserveAreaResponse"><span class="badge">M</span>PutReserveAreaResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.SelectAirspaceArrangementRequest"><span class="badge">M</span>SelectAirspaceArrangementRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.SelectAirspaceArrangementResponse"><span class="badge">M</span>SelectAirspaceArrangementResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.SelectObjectRequest"><span class="badge">M</span>SelectObjectRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.SelectObjectResponse"><span class="badge">M</span>SelectObjectResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.SelectObjectResponse.FlyableArea"><span class="badge">M</span>SelectObjectResponse.FlyableArea</a>
+                </li>
+              
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ErrorCode"><span class="badge">E</span>ErrorCode</a>
+                </li>
+              
+              
+              
+                <li>
+                  <a href="#uas.airmobility.v3.AirMobilityAPI"><span class="badge">S</span>AirMobilityAPI</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#airmobility%2fobject_a.proto">airmobility/object_a.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.Object"><span class="badge">M</span>Object</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectAirRisk"><span class="badge">M</span>ObjectAirRisk</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectBuilding"><span class="badge">M</span>ObjectBuilding</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectChannel"><span class="badge">M</span>ObjectChannel</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectEmergencyArea"><span class="badge">M</span>ObjectEmergencyArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectGroundRisk"><span class="badge">M</span>ObjectGroundRisk</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectMicrowave"><span class="badge">M</span>ObjectMicrowave</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectMobileNetwork"><span class="badge">M</span>ObjectMobileNetwork</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectMobileNetwork.PublicLandMobileNetWork"><span class="badge">M</span>ObjectMobileNetwork.PublicLandMobileNetWork</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectOverlayArea"><span class="badge">M</span>ObjectOverlayArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectReserveArea"><span class="badge">M</span>ObjectReserveArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectReserveArea.ReserveTime"><span class="badge">M</span>ObjectReserveArea.ReserveTime</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectRestrictedArea"><span class="badge">M</span>ObjectRestrictedArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectTerrain"><span class="badge">M</span>ObjectTerrain</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectWeather"><span class="badge">M</span>ObjectWeather</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectWeatherForecast"><span class="badge">M</span>ObjectWeatherForecast</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectWifiNetwork"><span class="badge">M</span>ObjectWifiNetwork</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.Objects"><span class="badge">M</span>Objects</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueAirRisk"><span class="badge">M</span>VoxelValueAirRisk</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueBuilding"><span class="badge">M</span>VoxelValueBuilding</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueChannel"><span class="badge">M</span>VoxelValueChannel</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueEmergencyArea"><span class="badge">M</span>VoxelValueEmergencyArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueGroundRisk"><span class="badge">M</span>VoxelValueGroundRisk</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueJunction"><span class="badge">M</span>VoxelValueJunction</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueOverlayArea"><span class="badge">M</span>VoxelValueOverlayArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueReserveArea"><span class="badge">M</span>VoxelValueReserveArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueRestrictedArea"><span class="badge">M</span>VoxelValueRestrictedArea</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueTerrain"><span class="badge">M</span>VoxelValueTerrain</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueWMobileNetwork"><span class="badge">M</span>VoxelValueWMobileNetwork</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueWeather"><span class="badge">M</span>VoxelValueWeather</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather"><span class="badge">M</span>VoxelValueWeather.CurrentWeather</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueWeatherForecast"><span class="badge">M</span>VoxelValueWeatherForecast</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast"><span class="badge">M</span>VoxelValueWeatherForecast.Forecast</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.VoxelWifiNetwork"><span class="badge">M</span>VoxelWifiNetwork</a>
+                </li>
+              
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectRestrictedArea.Type"><span class="badge">E</span>ObjectRestrictedArea.Type</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.ObjectType"><span class="badge">E</span>ObjectType</a>
+                </li>
+              
+              
+              
+            </ul>
+          </li>
+        
+        <li><a href="#scalar-value-types">Scalar Value Types</a></li>
+      </ul>
+    </div>
+
+    
+      
+      <div class="file-heading">
+        <h2 id="generic/sdsp_g.proto">generic/sdsp_g.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="generic.v3.ConnectServerRequest">ConnectServerRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>userID</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>ユーザID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>organizationID</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>組織ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.OptionalSpatialIdentification">OptionalSpatialIdentification</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>has_value</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>値を持っているか否か </p></td>
+                </tr>
+              
+                <tr>
+                  <td>spatial_id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.Period">Period</h3>
+        <p>期間</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>start_time</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>開始時刻 UNIX Time (UTC sec) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_time</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>終了時刻 UNIX Time (UTC sec) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.Point">Point</h3>
+        <p>座標情報</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>latitude</td>
+                  <td><a href="#double">double</a></td>
+                  <td></td>
+                  <td><p>WGS84 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>longitude</td>
+                  <td><a href="#double">double</a></td>
+                  <td></td>
+                  <td><p>WGS84 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>altitude</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>altitude_attribute</td>
+                  <td><a href="#generic.v3.Point.AltitudeAttribute">Point.AltitudeAttribute</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.ServerAddress">ServerAddress</h3>
+        <p>管理サーバーアドレス</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>grpc</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>gRPCサーバーアドレスおよびポート </p></td>
+                </tr>
+              
+                <tr>
+                  <td>rest</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>RESTサーバーベースURL </p></td>
+                </tr>
+              
+                <tr>
+                  <td>other</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>その他形式 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.SpatialFigure">SpatialFigure</h3>
+        <p>エリアや空間の領域の指定</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>identification</td>
+                  <td><a href="#generic.v3.SpatialIdentification">SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>[oneof figure] </p></td>
+                </tr>
+              
+                <tr>
+                  <td>tube</td>
+                  <td><a href="#generic.v3.SpatialFigure.Tube">SpatialFigure.Tube</a></td>
+                  <td></td>
+                  <td><p>[oneof figure] </p></td>
+                </tr>
+              
+                <tr>
+                  <td>polygon</td>
+                  <td><a href="#generic.v3.SpatialFigure.Polygon">SpatialFigure.Polygon</a></td>
+                  <td></td>
+                  <td><p>[oneof figure] </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.SpatialFigure.Polygon">SpatialFigure.Polygon</h3>
+        <p>多角形（表現形式検討中）</p>
+
+        
+
+        
+      
+        <h3 id="generic.v3.SpatialFigure.Tube">SpatialFigure.Tube</h3>
+        <p>角柱形状</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>start</td>
+                  <td><a href="#generic.v3.Point">Point</a></td>
+                  <td></td>
+                  <td><p>始点座標 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end</td>
+                  <td><a href="#generic.v3.Point">Point</a></td>
+                  <td></td>
+                  <td><p>終点座標 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>radian</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p>1辺長(m) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.SpatialIdentification">SpatialIdentification</h3>
+        <p>空間ID</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>ID</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>z/f/x/y </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.SpatialIdentifications">SpatialIdentifications</h3>
+        <p>空間ID</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>ID</td>
+                  <td><a href="#string">string</a></td>
+                  <td>repeated</td>
+                  <td><p>z/f/x/y </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="generic.v3.Token">Token</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>result</td>
+                  <td><a href="#generic.v3.Token.Code">Token.Code</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>token</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+        <h3 id="generic.v3.Point.AltitudeAttribute">Point.AltitudeAttribute</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>ALTITUDE_ATTRIBUTE_ELLIPSOID</td>
+                <td>0</td>
+                <td><p>楕円球体面高（当面対象外）</p></td>
+              </tr>
+            
+              <tr>
+                <td>ALTITUDE_ATTRIBUTE_MSL</td>
+                <td>1</td>
+                <td><p>ジオイド高</p></td>
+              </tr>
+            
+              <tr>
+                <td>ALTITUDE_ATTRIBUTE_AGL</td>
+                <td>2</td>
+                <td><p>地上高（当面対象外）</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+        <h3 id="generic.v3.Token.Code">Token.Code</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>COMPLETE</td>
+                <td>0</td>
+                <td><p>ログイン成功</p></td>
+              </tr>
+            
+              <tr>
+                <td>INVALID</td>
+                <td>3</td>
+                <td><p>パスワードが無効</p></td>
+              </tr>
+            
+              <tr>
+                <td>UNAVAILABLE_UAV</td>
+                <td>4</td>
+                <td><p>許容されない機体（他組織など）</p></td>
+              </tr>
+            
+              <tr>
+                <td>INTERNAL_ERROR</td>
+                <td>10</td>
+                <td><p></p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+
+      
+
+      
+        <h3 id="generic.v3.GenericAPI">GenericAPI</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>ConnectServer</td>
+                <td><a href="#generic.v3.ConnectServerRequest">ConnectServerRequest</a></td>
+                <td><a href="#generic.v3.Token">Token</a></td>
+                <td><p>サーバー接続（ログイン）
+ユーザIDとパスワードでトークンを得る</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="airmobility/sdsp_a.proto">airmobility/sdsp_a.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="uas.airmobility.v3.AirspaceArrangement">AirspaceArrangement</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>out_of_space</td>
+                  <td><a href="#generic.v3.SpatialIdentifications">generic.v3.SpatialIdentifications</a></td>
+                  <td></td>
+                  <td><p>当該SDSP_UASの管理外の領域およびオーバーレイ領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>flyable_space</td>
+                  <td><a href="#generic.v3.SpatialIdentifications">generic.v3.SpatialIdentifications</a></td>
+                  <td></td>
+                  <td><p>指定範囲内の飛行許容領域。領域が変化し増えた場合は追加領域のみ通知。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>occupied_space</td>
+                  <td><a href="#generic.v3.SpatialIdentifications">generic.v3.SpatialIdentifications</a></td>
+                  <td></td>
+                  <td><p>飛行許容領域から閉塞領域に変更された領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.DeleteObjectRequest">DeleteObjectRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>登録ID。0の場合は新規登録。User名が一致していない場合はエラー。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.DeleteObjectResponse">DeleteObjectResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.DeleteRequest">DeleteRequest</h3>
+        <p>DeleteRequest入力パラメータ定義</p><p>ユーザ追加は要素番号30以降を利用すること</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td>repeated</td>
+                  <td><p>リクエストしたUserIDが登録したUserIDと不一致の場合はエラー。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.GetObjectRequest">GetObjectRequest</h3>
+        <p>GetObject入力パラメータ定義</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>登録IDの空間ID属性値を得る </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.GetValueRequest">GetValueRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>figure</td>
+                  <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
+                  <td></td>
+                  <td><p>取得する領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>request_type</td>
+                  <td><a href="#uas.airmobility.v3.ObjectType">ObjectType</a></td>
+                  <td>repeated</td>
+                  <td><p>取得するオブジェクトのタイプ。バリアへの対応はオプション。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.GetValueResponse">GetValueResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>values</td>
+                  <td><a href="#uas.airmobility.v3.Objects">Objects</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.PutObjectRequest">PutObjectRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>overwrite</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+
+trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>object</td>
+                  <td><a href="#uas.airmobility.v3.Object">Object</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.PutObjectResponse">PutObjectResponse</h3>
+        <p>設定できるエリアの種別（AirspaceInfo）はユーザ権限による</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>登録ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.PutReserveAreaRequest">PutReserveAreaRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>登録ID。0の場合は新規登録。User名が一致していない場合はエラー。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>overwrite</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>area</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueReserveArea">VoxelValueReserveArea</a></td>
+                  <td>repeated</td>
+                  <td><p>設定するエリア。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.PutReserveAreaResponse">PutReserveAreaResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>登録ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.SelectAirspaceArrangementRequest">SelectAirspaceArrangementRequest</h3>
+        <p>SelectAirspaceArrangement入力パラメータ定義</p><p>ユーザ追加は要素番号30以降を利用すること</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>figure</td>
+                  <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
+                  <td></td>
+                  <td><p>取得する領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>period</td>
+                  <td><a href="#generic.v3.Period">generic.v3.Period</a></td>
+                  <td></td>
+                  <td><p>取得する時間帯 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>include_reserve_area</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>trueで飛行計画で予約されたエリアやルートも除外する。trueへの対応はオプショナル。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.SelectAirspaceArrangementResponse">SelectAirspaceArrangementResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>out_of_space</td>
+                  <td><a href="#generic.v3.SpatialIdentifications">generic.v3.SpatialIdentifications</a></td>
+                  <td></td>
+                  <td><p>当該SDSP_UASの管理外の領域およびオーバーレイ領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>flyable_space</td>
+                  <td><a href="#generic.v3.SpatialIdentifications">generic.v3.SpatialIdentifications</a></td>
+                  <td></td>
+                  <td><p>飛行許容領域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>error</td>
+                  <td><a href="#uas.airmobility.v3.ErrorCode">ErrorCode</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.SelectObjectRequest">SelectObjectRequest</h3>
+        <p>指定エリア内に存在するオブジェクトを返す</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>area</td>
+                  <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
+                  <td>repeated</td>
+                  <td><p>指定エリア。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>type</td>
+                  <td><a href="#uas.airmobility.v3.ObjectType">ObjectType</a></td>
+                  <td></td>
+                  <td><p>取得する地物の種類。バリアへの対応はオプション。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>with_forecast_weather</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>天気予報情報を取得する </p></td>
+                </tr>
+              
+                <tr>
+                  <td>with_current_weather</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>現在の天候情報を取得する </p></td>
+                </tr>
+              
+                <tr>
+                  <td>plmn_id</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p>指定したキャリアの電波強度を取得する </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.SelectObjectResponse">SelectObjectResponse</h3>
+        <p>指定エリア内に存在するオブジェクト</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#uas.airmobility.v3.SelectObjectResponse.FlyableArea">SelectObjectResponse.FlyableArea</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.SelectObjectResponse.FlyableArea">SelectObjectResponse.FlyableArea</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>current_weather</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</a></td>
+                  <td>optional</td>
+                  <td><p>現況 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>forecast</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</a></td>
+                  <td>optional</td>
+                  <td><p>予報 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>mobile_network</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWMobileNetwork">VoxelValueWMobileNetwork</a></td>
+                  <td>optional</td>
+                  <td><p>電波強度 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+        <h3 id="uas.airmobility.v3.ErrorCode">ErrorCode</h3>
+        <p>エラーコード</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>ErrorCode_UNSPECIFIED</td>
+                <td>0</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>ErrorCode_Duplicate</td>
+                <td>1</td>
+                <td><p>重複</p></td>
+              </tr>
+            
+              <tr>
+                <td>ErrorCode_AccessDeny</td>
+                <td>2</td>
+                <td><p>アクセス権限なし</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+
+      
+
+      
+        <h3 id="uas.airmobility.v3.AirMobilityAPI">AirMobilityAPI</h3>
+        <p>エアモビリティ向け空間情報基盤</p><p>GenericAPIのConnectServerで得たトークンをheaderにuseridと共に設定する</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>PutObject</td>
+                <td><a href="#uas.airmobility.v3.PutObjectRequest">PutObjectRequest</a></td>
+                <td><a href="#uas.airmobility.v3.PutObjectResponse">PutObjectResponse</a></td>
+                <td><p>空間情報登録
+
+オブジェクトを空間ID群で登録する。</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetObject</td>
+                <td><a href="#uas.airmobility.v3.GetObjectRequest">GetObjectRequest</a></td>
+                <td><a href="#uas.airmobility.v3.Object">Object</a> stream</td>
+                <td><p>空間情報取得
+
+オブジェクトの値を得る</p></td>
+              </tr>
+            
+              <tr>
+                <td>DeleteObject</td>
+                <td><a href="#uas.airmobility.v3.DeleteObjectRequest">DeleteObjectRequest</a></td>
+                <td><a href="#uas.airmobility.v3.DeleteObjectResponse">DeleteObjectResponse</a></td>
+                <td><p>空間情報削除
+
+空間情報を削除する。</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetValue</td>
+                <td><a href="#uas.airmobility.v3.GetValueRequest">GetValueRequest</a></td>
+                <td><a href="#uas.airmobility.v3.Objects">Objects</a> stream</td>
+                <td><p>指定領域空間情報取得
+
+指定した領域のリスク値などの空間情報の値を得る。</p></td>
+              </tr>
+            
+              <tr>
+                <td>PutReserveArea</td>
+                <td><a href="#uas.airmobility.v3.PutReserveAreaRequest">PutReserveAreaRequest</a></td>
+                <td><a href="#uas.airmobility.v3.PutReserveAreaResponse">PutReserveAreaResponse</a></td>
+                <td><p>飛行計画登録（予約）
+
+飛行計画（各種形状の空域空間）を空間ID群で登録する。
+重複はエラー</p></td>
+              </tr>
+            
+              <tr>
+                <td>SelectAirspaceArrangement</td>
+                <td><a href="#uas.airmobility.v3.SelectAirspaceArrangementRequest">SelectAirspaceArrangementRequest</a></td>
+                <td><a href="#uas.airmobility.v3.SelectAirspaceArrangementResponse">SelectAirspaceArrangementResponse</a></td>
+                <td><p>飛行許容空域取得
+
+指定した領域および時刻を指定し、飛行許容領域の空間ID群を得る。
+空域空間の値の取得にはGetValue()を利用する。
+飛行許容領域は下記を含まない領域
+・バリア
+・飛行制限空域
+・緊急用務空域
+・飛行計画空域
+・オーバーレイ</p></td>
+              </tr>
+            
+              <tr>
+                <td>SelectAirspaceArrangementStream</td>
+                <td><a href="#uas.airmobility.v3.SelectAirspaceArrangementRequest">SelectAirspaceArrangementRequest</a></td>
+                <td><a href="#uas.airmobility.v3.AirspaceArrangement">AirspaceArrangement</a> stream</td>
+                <td><p>飛行許容空域取得（ストリーム）
+
+指定した領域および時刻で飛行可能な空域空間の空間ID群をストリームで得る。
+次のようなケースに利用する。
+・大量のデータを分割して取得
+・変化を取得</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="airmobility/object_a.proto">airmobility/object_a.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="uas.airmobility.v3.Object">Object</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>terrain</td>
+                  <td><a href="#uas.airmobility.v3.ObjectTerrain">ObjectTerrain</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 地形 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>building</td>
+                  <td><a href="#uas.airmobility.v3.ObjectBuilding">ObjectBuilding</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 建物 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>restricted_area</td>
+                  <td><a href="#uas.airmobility.v3.ObjectRestrictedArea">ObjectRestrictedArea</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 飛行制限空域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>emergency_area</td>
+                  <td><a href="#uas.airmobility.v3.ObjectEmergencyArea">ObjectEmergencyArea</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 緊急用務空域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>reserve_area</td>
+                  <td><a href="#uas.airmobility.v3.ObjectReserveArea">ObjectReserveArea</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 飛行計画空域 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>channel</td>
+                  <td><a href="#uas.airmobility.v3.ObjectChannel">ObjectChannel</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 航路エリア </p></td>
+                </tr>
+              
+                <tr>
+                  <td>overlay_area</td>
+                  <td><a href="#uas.airmobility.v3.ObjectOverlayArea">ObjectOverlayArea</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 他システム管理エリア </p></td>
+                </tr>
+              
+                <tr>
+                  <td>weather</td>
+                  <td><a href="#uas.airmobility.v3.ObjectWeather">ObjectWeather</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 気象 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>weather_forecast</td>
+                  <td><a href="#uas.airmobility.v3.ObjectWeatherForecast">ObjectWeatherForecast</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 気象予報 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>microwave</td>
+                  <td><a href="#uas.airmobility.v3.ObjectMicrowave">ObjectMicrowave</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 通信ネットワーク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>ground_risk</td>
+                  <td><a href="#uas.airmobility.v3.ObjectGroundRisk">ObjectGroundRisk</a></td>
+                  <td></td>
+                  <td><p>[oneof object] グランドリスク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>ari_risk</td>
+                  <td><a href="#uas.airmobility.v3.ObjectAirRisk">ObjectAirRisk</a></td>
+                  <td></td>
+                  <td><p>[oneof object] 気空間リスク </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectAirRisk">ObjectAirRisk</h3>
+        <p>グランドリスクオブジェクトの値</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueAirRisk">VoxelValueAirRisk</a></td>
+                  <td>repeated</td>
+                  <td><p>空間リスク指標値の集合 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectBuilding">ObjectBuilding</h3>
+        <p>建物オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueBuilding">VoxelValueBuilding</a></td>
+                  <td>repeated</td>
+                  <td><p>建物オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectChannel">ObjectChannel</h3>
+        <p>航路エリアオブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>owner_address</td>
+                  <td><a href="#generic.v3.ServerAddress">generic.v3.ServerAddress</a></td>
+                  <td></td>
+                  <td><p>航路管理元アドレス </p></td>
+                </tr>
+              
+                <tr>
+                  <td>channel_id</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>航路識別子 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>channel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueChannel">VoxelValueChannel</a></td>
+                  <td>repeated</td>
+                  <td><p>飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>junction_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueJunction">VoxelValueJunction</a></td>
+                  <td>repeated</td>
+                  <td><p>他航路との接続点。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectEmergencyArea">ObjectEmergencyArea</h3>
+        <p>緊急用務空域オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueEmergencyArea">VoxelValueEmergencyArea</a></td>
+                  <td>repeated</td>
+                  <td><p>緊急用務空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectGroundRisk">ObjectGroundRisk</h3>
+        <p>グランドリスクオブジェクトの値</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueGroundRisk">VoxelValueGroundRisk</a></td>
+                  <td>repeated</td>
+                  <td><p>グランドリスク指標値の集合 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectMicrowave">ObjectMicrowave</h3>
+        <p>電波強度オブジェクト</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>mobile</td>
+                  <td><a href="#uas.airmobility.v3.ObjectMobileNetwork">ObjectMobileNetwork</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>wifi</td>
+                  <td><a href="#uas.airmobility.v3.ObjectWifiNetwork">ObjectWifiNetwork</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectMobileNetwork">ObjectMobileNetwork</h3>
+        <p>携帯網</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>plmn_id</td>
+                  <td><a href="#uas.airmobility.v3.ObjectMobileNetwork.PublicLandMobileNetWork">ObjectMobileNetwork.PublicLandMobileNetWork</a></td>
+                  <td></td>
+                  <td><p>通信事業者コード </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWMobileNetwork">VoxelValueWMobileNetwork</a></td>
+                  <td>repeated</td>
+                  <td><p>携帯網オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectMobileNetwork.PublicLandMobileNetWork">ObjectMobileNetwork.PublicLandMobileNetWork</h3>
+        <p>PLMN https://www.itu.int/rec/T-REC-Q.1001-198811-I/en</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>mobile_country_code</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>MCC https://www.itu.int/rec/T-REC-E.212-201609-I/en </p></td>
+                </tr>
+              
+                <tr>
+                  <td>mobile_network_code</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>MNC https://www.itu.int/rec/T-REC-E.212-201609-I/en </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectOverlayArea">ObjectOverlayArea</h3>
+        <p>他システム管理エリアオブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>owner_address</td>
+                  <td><a href="#generic.v3.ServerAddress">generic.v3.ServerAddress</a></td>
+                  <td></td>
+                  <td><p>管理元アドレス </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueOverlayArea">VoxelValueOverlayArea</a></td>
+                  <td>repeated</td>
+                  <td><p>他システム管理エリアオブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectReserveArea">ObjectReserveArea</h3>
+        <p>飛行計画空域オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>owner_id</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>予約者のuserID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>reservation_time</td>
+                  <td><a href="#uas.airmobility.v3.ObjectReserveArea.ReserveTime">ObjectReserveArea.ReserveTime</a></td>
+                  <td>optional</td>
+                  <td><p>PutReserveAreaRequestでは必須。 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueReserveArea">VoxelValueReserveArea</a></td>
+                  <td>repeated</td>
+                  <td><p>飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectReserveArea.ReserveTime">ObjectReserveArea.ReserveTime</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>period</td>
+                  <td><a href="#generic.v3.Period">generic.v3.Period</a></td>
+                  <td></td>
+                  <td><p>予約時刻帯 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>occupation</td>
+                  <td><a href="#google.protobuf.Duration">google.protobuf.Duration</a></td>
+                  <td></td>
+                  <td><p>予約時間帯のうち占有予定時間（飛行時間） </p></td>
+                </tr>
+              
+                <tr>
+                  <td>reserve_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>PutReserveAreaRequestでは0。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectRestrictedArea">ObjectRestrictedArea</h3>
+        <p>飛行制限空域（飛行制限区域）の値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>type</td>
+                  <td><a href="#uas.airmobility.v3.ObjectRestrictedArea.Type">ObjectRestrictedArea.Type</a></td>
+                  <td></td>
+                  <td><p>種別 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueRestrictedArea">VoxelValueRestrictedArea</a></td>
+                  <td>repeated</td>
+                  <td><p>飛行制限空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectTerrain">ObjectTerrain</h3>
+        <p>地形オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueTerrain">VoxelValueTerrain</a></td>
+                  <td>repeated</td>
+                  <td><p>地形オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectWeather">ObjectWeather</h3>
+        <p>気象オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeather">VoxelValueWeather</a></td>
+                  <td>repeated</td>
+                  <td><p>気象オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectWeatherForecast">ObjectWeatherForecast</h3>
+        <p>気象予報オブジェクトの値。空間IDを含む。</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast">VoxelValueWeatherForecast</a></td>
+                  <td>repeated</td>
+                  <td><p>気象オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.ObjectWifiNetwork">ObjectWifiNetwork</h3>
+        <p>Wifi網</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>reference</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p>素となる情報へのリンク </p></td>
+                </tr>
+              
+                <tr>
+                  <td>ssid</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>wifi SSID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>voxel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelWifiNetwork">VoxelWifiNetwork</a></td>
+                  <td>repeated</td>
+                  <td><p>Wifi網オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.Objects">Objects</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>objects</td>
+                  <td><a href="#uas.airmobility.v3.Object">Object</a></td>
+                  <td>repeated</td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueAirRisk">VoxelValueAirRisk</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>value</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p>0-100の指標値 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueBuilding">VoxelValueBuilding</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>vacant</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueChannel">VoxelValueChannel</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueEmergencyArea">VoxelValueEmergencyArea</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>vacant</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueGroundRisk">VoxelValueGroundRisk</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID。2D表現 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>value</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p>0-100の指標値 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueJunction">VoxelValueJunction</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>connected_channel_ids</td>
+                  <td><a href="#string">string</a></td>
+                  <td>repeated</td>
+                  <td><p>接続先の航路のchannel_id </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueOverlayArea">VoxelValueOverlayArea</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueReserveArea">VoxelValueReserveArea</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>reservation_time</td>
+                  <td><a href="#uas.airmobility.v3.ObjectReserveArea.ReserveTime">ObjectReserveArea.ReserveTime</a></td>
+                  <td>optional</td>
+                  <td><p>予約時間（プロパティと重複する場合は本パラメータが優先） </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueRestrictedArea">VoxelValueRestrictedArea</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueTerrain">VoxelValueTerrain</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>vacant</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueWMobileNetwork">VoxelValueWMobileNetwork</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>RSI</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p>電波強度(dB) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueWeather">VoxelValueWeather</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>current_weather</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</a></td>
+                  <td></td>
+                  <td><p>現況 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</h3>
+        <p>現況</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>start_time</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p>開始時刻 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_time</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p>終了時刻 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>wind_direction</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>風向(degree) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>wind_speed</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>風速(knot) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>cloud_rate</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>雲の割合(%) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>temperature</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>気温（°C） </p></td>
+                </tr>
+              
+                <tr>
+                  <td>dew_point</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>露点温度（°C） </p></td>
+                </tr>
+              
+                <tr>
+                  <td>pressure</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>気圧(hPa) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>precipitation</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>降水量（mm/h） </p></td>
+                </tr>
+              
+                <tr>
+                  <td>visibility</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>視程(km) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>gggg</td>
+                  <td><a href="#string">string</a></td>
+                  <td>optional</td>
+                  <td><p>運航上重要な気象 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueWeatherForecast">VoxelValueWeatherForecast</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>forecast</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</a></td>
+                  <td></td>
+                  <td><p>予報 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</h3>
+        <p>予報</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>start_time</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p>開始時刻 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_time</td>
+                  <td><a href="#google.protobuf.Timestamp">google.protobuf.Timestamp</a></td>
+                  <td></td>
+                  <td><p>終了時刻 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>wind_direction</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>風向(degree) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>wind_speed</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>風速(knot) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>cloud_rate</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>雲の割合(%) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>precipitation</td>
+                  <td><a href="#float">float</a></td>
+                  <td>optional</td>
+                  <td><p>降水量（mm/h） </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.VoxelWifiNetwork">VoxelWifiNetwork</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
+                  <td></td>
+                  <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>RSI</td>
+                  <td><a href="#float">float</a></td>
+                  <td></td>
+                  <td><p>電波強度(dB) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+        <h3 id="uas.airmobility.v3.ObjectRestrictedArea.Type">ObjectRestrictedArea.Type</h3>
+        <p></p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>TYPE_FREE</td>
+                <td>0</td>
+                <td><p>制限なし（idが存在しないことと等価）</p></td>
+              </tr>
+            
+              <tr>
+                <td>TYPE_P</td>
+                <td>1</td>
+                <td><p>飛行禁止</p></td>
+              </tr>
+            
+              <tr>
+                <td>TYPE_R</td>
+                <td>2</td>
+                <td><p>飛行制限</p></td>
+              </tr>
+            
+              <tr>
+                <td>TYPE_K</td>
+                <td>3</td>
+                <td><p>訓練等空域</p></td>
+              </tr>
+            
+              <tr>
+                <td>TYPE_N</td>
+                <td>4</td>
+                <td><p>一時制限</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+        <h3 id="uas.airmobility.v3.ObjectType">ObjectType</h3>
+        <p>地物の種類</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>OBJECT_TYPE_UNSPECIFIED</td>
+                <td>0</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>TERRAIN</td>
+                <td>1</td>
+                <td><p>地形（バリア）</p></td>
+              </tr>
+            
+              <tr>
+                <td>BUILDING</td>
+                <td>2</td>
+                <td><p>建物（バリア）</p></td>
+              </tr>
+            
+              <tr>
+                <td>RESTRICTED_AREA</td>
+                <td>5</td>
+                <td><p>飛行制限空域（飛行空域）</p></td>
+              </tr>
+            
+              <tr>
+                <td>EMERGENCY_AREA</td>
+                <td>6</td>
+                <td><p>緊急用務空域（飛行空域）</p></td>
+              </tr>
+            
+              <tr>
+                <td>RESERVE_AREA</td>
+                <td>7</td>
+                <td><p>飛行計画空域（飛行空域）</p></td>
+              </tr>
+            
+              <tr>
+                <td>CHANNEL</td>
+                <td>8</td>
+                <td><p>航路エリア（飛行空域）</p></td>
+              </tr>
+            
+              <tr>
+                <td>OVERLAY_AREA</td>
+                <td>9</td>
+                <td><p>他システム（SDSPやUSS）で管理される空域</p></td>
+              </tr>
+            
+              <tr>
+                <td>WEATHER</td>
+                <td>20</td>
+                <td><p>気象</p></td>
+              </tr>
+            
+              <tr>
+                <td>WEATHER_FORECAST</td>
+                <td>21</td>
+                <td><p>気象予報</p></td>
+              </tr>
+            
+              <tr>
+                <td>MICROWAVE</td>
+                <td>22</td>
+                <td><p>電波強度</p></td>
+              </tr>
+            
+              <tr>
+                <td>GROUND_RISK</td>
+                <td>40</td>
+                <td><p>グランドリスク</p></td>
+              </tr>
+            
+              <tr>
+                <td>AIR_RISK</td>
+                <td>41</td>
+                <td><p>空間リスク</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+      
+
+      
+
+      
+    
+
+    <h2 id="scalar-value-types">Scalar Value Types</h2>
+    <table class="scalar-value-types-table">
+      <thead>
+        <tr><td>.proto Type</td><td>Notes</td><td>C++</td><td>Java</td><td>Python</td><td>Go</td><td>C#</td><td>PHP</td><td>Ruby</td></tr>
+      </thead>
+      <tbody>
+        
+          <tr id="double">
+            <td>double</td>
+            <td></td>
+            <td>double</td>
+            <td>double</td>
+            <td>float</td>
+            <td>float64</td>
+            <td>double</td>
+            <td>float</td>
+            <td>Float</td>
+          </tr>
+        
+          <tr id="float">
+            <td>float</td>
+            <td></td>
+            <td>float</td>
+            <td>float</td>
+            <td>float</td>
+            <td>float32</td>
+            <td>float</td>
+            <td>float</td>
+            <td>Float</td>
+          </tr>
+        
+          <tr id="int32">
+            <td>int32</td>
+            <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="int64">
+            <td>int64</td>
+            <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="uint32">
+            <td>uint32</td>
+            <td>Uses variable-length encoding.</td>
+            <td>uint32</td>
+            <td>int</td>
+            <td>int/long</td>
+            <td>uint32</td>
+            <td>uint</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="uint64">
+            <td>uint64</td>
+            <td>Uses variable-length encoding.</td>
+            <td>uint64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>uint64</td>
+            <td>ulong</td>
+            <td>integer/string</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sint32">
+            <td>sint32</td>
+            <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sint64">
+            <td>sint64</td>
+            <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="fixed32">
+            <td>fixed32</td>
+            <td>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</td>
+            <td>uint32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>uint32</td>
+            <td>uint</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="fixed64">
+            <td>fixed64</td>
+            <td>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</td>
+            <td>uint64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>uint64</td>
+            <td>ulong</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="sfixed32">
+            <td>sfixed32</td>
+            <td>Always four bytes.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sfixed64">
+            <td>sfixed64</td>
+            <td>Always eight bytes.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="bool">
+            <td>bool</td>
+            <td></td>
+            <td>bool</td>
+            <td>boolean</td>
+            <td>boolean</td>
+            <td>bool</td>
+            <td>bool</td>
+            <td>boolean</td>
+            <td>TrueClass/FalseClass</td>
+          </tr>
+        
+          <tr id="string">
+            <td>string</td>
+            <td>A string must always contain UTF-8 encoded or 7-bit ASCII text.</td>
+            <td>string</td>
+            <td>String</td>
+            <td>str/unicode</td>
+            <td>string</td>
+            <td>string</td>
+            <td>string</td>
+            <td>String (UTF-8)</td>
+          </tr>
+        
+          <tr id="bytes">
+            <td>bytes</td>
+            <td>May contain any arbitrary sequence of bytes.</td>
+            <td>string</td>
+            <td>ByteString</td>
+            <td>str</td>
+            <td>[]byte</td>
+            <td>ByteString</td>
+            <td>string</td>
+            <td>String (ASCII-8BIT)</td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>
+

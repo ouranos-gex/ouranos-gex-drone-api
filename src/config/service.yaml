@@ -3,27 +3,27 @@ config-version: 3
 
 http:
     rules:
-        - selector: generic.v2.GenericAPI.ConnectServer
-          post: /gen/api/generic/v2/connect-server
+        - selector: generic.v3.GenericAPI.ConnectServer
+          post: /gen/api/generic/v3/connect-server
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.PutObject
-          post: /uas/api/airmobility/v2/pub-object
+        - selector: uas.airmobility.v3.AirMobilityAPI.PutObject
+          post: /uas/api/airmobility/v3/pub-object
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.GetObject
-          post: /uas/api/airmobility/v2/get-object
+        - selector: uas.airmobility.v3.AirMobilityAPI.GetObject
+          post: /uas/api/airmobility/v3/get-object
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.DeleteObject
-          post: /uas/api/airmobility/v2/delete-object
+        - selector: uas.airmobility.v3.AirMobilityAPI.DeleteObject
+          post: /uas/api/airmobility/v3/delete-object
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.GetValue
-          post: /uas/api/airmobility/v2/get-value
+        - selector: uas.airmobility.v3.AirMobilityAPI.GetValue
+          post: /uas/api/airmobility/v3/get-value
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.PutReserveArea
-          post: /uas/api/airmobility/v2/put-reserve-area
+        - selector: uas.airmobility.v3.AirMobilityAPI.PutReserveArea
+          post: /uas/api/airmobility/v3/put-reserve-area
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.SelectAirspaceArrangement
-          post: /uas/api/airmobility/v2/select-airspace-arrangement
+        - selector: uas.airmobility.v3.AirMobilityAPI.SelectAirspaceArrangement
+          post: /uas/api/airmobility/v3/select-airspace-arrangement
           body: '*'
-        - selector: uas.airmobility.v2.AirMobilityAPI.SelectAirspaceArrangementStream
-          post: /uas/api/airmobility/v2/select-airspace-arrangement-stream
+        - selector: uas.airmobility.v3.AirMobilityAPI.SelectAirspaceArrangementStream
+          post: /uas/api/airmobility/v3/select-airspace-arrangement-stream
           body: '*'
