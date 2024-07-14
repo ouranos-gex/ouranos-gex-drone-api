@@ -297,18 +297,6 @@
                   <a href="#uas.airmobility.v3.SelectAirspaceArrangementResponse"><span class="badge">M</span>SelectAirspaceArrangementResponse</a>
                 </li>
               
-                <li>
-                  <a href="#uas.airmobility.v3.SelectObjectRequest"><span class="badge">M</span>SelectObjectRequest</a>
-                </li>
-              
-                <li>
-                  <a href="#uas.airmobility.v3.SelectObjectResponse"><span class="badge">M</span>SelectObjectResponse</a>
-                </li>
-              
-                <li>
-                  <a href="#uas.airmobility.v3.SelectObjectResponse.FlyableArea"><span class="badge">M</span>SelectObjectResponse.FlyableArea</a>
-                </li>
-              
               
                 <li>
                   <a href="#uas.airmobility.v3.ErrorCode"><span class="badge">E</span>ErrorCode</a>
@@ -674,7 +662,7 @@
         
       
         <h3 id="generic.v3.SpatialFigure">SpatialFigure</h3>
-        <p>エリアや空間の領域の指定</p>
+        <p>エリアや空間の領域の指定。identification/tube/polygonはoneof。</p>
 
         
           <table class="field-table">
@@ -770,7 +758,9 @@
                   <td>ID</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>z/f/x/y </p></td>
+                  <td><p>空間IDを表す文字列
+
+z/f/x/y </p></td>
                 </tr>
               
             </tbody>
@@ -794,7 +784,7 @@
                   <td>ID</td>
                   <td><a href="#string">string</a></td>
                   <td>repeated</td>
-                  <td><p>z/f/x/y </p></td>
+                  <td><p>空間ID列 </p></td>
                 </tr>
               
             </tbody>
@@ -992,7 +982,9 @@
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>登録ID。0の場合は新規登録。User名が一致していない場合はエラー。 </p></td>
+                  <td><p>オブジェクト識別子
+
+User名が一致していない場合はエラー </p></td>
                 </tr>
               
             </tbody>
@@ -1040,7 +1032,9 @@
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td>repeated</td>
-                  <td><p>リクエストしたUserIDが登録したUserIDと不一致の場合はエラー。 </p></td>
+                  <td><p>オブジェクト識別子列
+
+User名が一致していない場合はエラー。 </p></td>
                 </tr>
               
             </tbody>
@@ -1064,7 +1058,9 @@
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>登録IDの空間ID属性値を得る </p></td>
+                  <td><p>オブジェクト識別子
+
+User名が一致していない場合はエラー </p></td>
                 </tr>
               
             </tbody>
@@ -1088,14 +1084,16 @@
                   <td>figure</td>
                   <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
                   <td></td>
-                  <td><p>取得する領域 </p></td>
+                  <td><p>取得する領域
+
+領域を空間IDの列で指定する </p></td>
                 </tr>
               
                 <tr>
                   <td>request_type</td>
                   <td><a href="#uas.airmobility.v3.ObjectType">ObjectType</a></td>
                   <td>repeated</td>
-                  <td><p>取得するオブジェクトのタイプ。バリアへの対応はオプション。 </p></td>
+                  <td><p>取得するオブジェクトのタイプ </p></td>
                 </tr>
               
             </tbody>
@@ -1119,7 +1117,9 @@
                   <td>values</td>
                   <td><a href="#uas.airmobility.v3.Objects">Objects</a></td>
                   <td>repeated</td>
-                  <td><p> </p></td>
+                  <td><p>オブジェクトの列
+
+ボクセルの値はfigureで指定した範囲内のみが返却される </p></td>
                 </tr>
               
                 <tr>
@@ -1150,9 +1150,9 @@
                   <td>overwrite</td>
                   <td><a href="#bool">bool</a></td>
                   <td></td>
-                  <td><p>int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+                  <td><p>上書きフラグ
 
-trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。 </p></td>
+trueの場合はオブジェクト識別子の指定必須、旧のデータを削除し入力の情報で上書き。falseかつオブジェクト識別子が指定されている場合は空間IDの値を追加。falseかつオブジェクト識別子が指定されていない場合はオブジェクト追加。 </p></td>
                 </tr>
               
                 <tr>
@@ -1183,7 +1183,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>登録ID </p></td>
+                  <td><p>オブジェクト識別子
+
+User名が一致していない場合はエラー </p></td>
                 </tr>
               
                 <tr>
@@ -1213,22 +1215,28 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                 <tr>
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
-                  <td></td>
-                  <td><p>登録ID。0の場合は新規登録。User名が一致していない場合はエラー。 </p></td>
+                  <td>optional</td>
+                  <td><p>オブジェクト識別子
+
+指定ありでUser名が一致していない場合はエラー。 </p></td>
                 </tr>
               
                 <tr>
                   <td>overwrite</td>
                   <td><a href="#bool">bool</a></td>
                   <td></td>
-                  <td><p>trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。 </p></td>
+                  <td><p>上書きフラグ
+
+trueの場合はオブジェクト識別子の指定必須、旧のデータを削除し入力の情報で上書き。falseかつオブジェクト識別子が指定されている場合は空間IDの値を追加。falseかつオブジェクト識別子が指定されていない場合はオブジェクト追加。 </p></td>
                 </tr>
               
                 <tr>
                   <td>area</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueReserveArea">VoxelValueReserveArea</a></td>
+                  <td><a href="#uas.airmobility.v3.ObjectReserveArea">ObjectReserveArea</a></td>
                   <td>repeated</td>
-                  <td><p>設定するエリア。 </p></td>
+                  <td><p>飛行計画空域
+
+設定するエリア。 </p></td>
                 </tr>
               
             </tbody>
@@ -1252,7 +1260,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p>登録ID </p></td>
+                  <td><p>オブジェクト識別子 </p></td>
                 </tr>
               
                 <tr>
@@ -1345,127 +1353,6 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
 
         
       
-        <h3 id="uas.airmobility.v3.SelectObjectRequest">SelectObjectRequest</h3>
-        <p>指定エリア内に存在するオブジェクトを返す</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>area</td>
-                  <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
-                  <td>repeated</td>
-                  <td><p>指定エリア。 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>type</td>
-                  <td><a href="#uas.airmobility.v3.ObjectType">ObjectType</a></td>
-                  <td></td>
-                  <td><p>取得する地物の種類。バリアへの対応はオプション。 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>with_forecast_weather</td>
-                  <td><a href="#bool">bool</a></td>
-                  <td></td>
-                  <td><p>天気予報情報を取得する </p></td>
-                </tr>
-              
-                <tr>
-                  <td>with_current_weather</td>
-                  <td><a href="#bool">bool</a></td>
-                  <td></td>
-                  <td><p>現在の天候情報を取得する </p></td>
-                </tr>
-              
-                <tr>
-                  <td>plmn_id</td>
-                  <td><a href="#string">string</a></td>
-                  <td>optional</td>
-                  <td><p>指定したキャリアの電波強度を取得する </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="uas.airmobility.v3.SelectObjectResponse">SelectObjectResponse</h3>
-        <p>指定エリア内に存在するオブジェクト</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>object_id</td>
-                  <td><a href="#uas.airmobility.v3.SelectObjectResponse.FlyableArea">SelectObjectResponse.FlyableArea</a></td>
-                  <td>repeated</td>
-                  <td><p> </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="uas.airmobility.v3.SelectObjectResponse.FlyableArea">SelectObjectResponse.FlyableArea</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>id</td>
-                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
-                  <td></td>
-                  <td><p>空間ID </p></td>
-                </tr>
-              
-                <tr>
-                  <td>current_weather</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</a></td>
-                  <td>optional</td>
-                  <td><p>現況 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>forecast</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</a></td>
-                  <td>optional</td>
-                  <td><p>予報 </p></td>
-                </tr>
-              
-                <tr>
-                  <td>mobile_network</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueWMobileNetwork">VoxelValueWMobileNetwork</a></td>
-                  <td>optional</td>
-                  <td><p>電波強度 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
 
       
         <h3 id="uas.airmobility.v3.ErrorCode">ErrorCode</h3>
@@ -1515,7 +1402,8 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                 <td><a href="#uas.airmobility.v3.PutObjectResponse">PutObjectResponse</a></td>
                 <td><p>空間情報登録
 
-オブジェクトを空間ID群で登録する。</p></td>
+オブジェクトを登録する。
+存在しないオブジェクト識別子が指定された場合はエラー、オブジェクト識別子を指定しない場合はオブジェクトを新規に生成する。</p></td>
               </tr>
             
               <tr>
@@ -1524,7 +1412,8 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                 <td><a href="#uas.airmobility.v3.Object">Object</a> stream</td>
                 <td><p>空間情報取得
 
-オブジェクトの値を得る</p></td>
+オブジェクトの値を得る
+応答はObjectごとにストリームで返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。</p></td>
               </tr>
             
               <tr>
@@ -1542,7 +1431,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                 <td><a href="#uas.airmobility.v3.Objects">Objects</a> stream</td>
                 <td><p>指定領域空間情報取得
 
-指定した領域のリスク値などの空間情報の値を得る。</p></td>
+指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。</p></td>
               </tr>
             
               <tr>
@@ -1596,7 +1485,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
 
       
         <h3 id="uas.airmobility.v3.Object">Object</h3>
-        <p></p>
+        <p>オブジェクト</p><p>terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof</p>
 
         
           <table class="field-table">
@@ -1609,7 +1498,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>object_id</td>
                   <td><a href="#int64">int64</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>オブジェクト識別子 </p></td>
                 </tr>
               
                 <tr>
@@ -1717,14 +1606,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueAirRisk">VoxelValueAirRisk</a></td>
                   <td>repeated</td>
-                  <td><p>空間リスク指標値の集合 </p></td>
+                  <td><p>ボクセルの集合
+
+空間リスク指標値のボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1735,7 +1626,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectBuilding">ObjectBuilding</h3>
-        <p>建物オブジェクトの値。空間IDを含む。</p>
+        <p>建物オブジェクトの値</p>
 
         
           <table class="field-table">
@@ -1748,14 +1639,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueBuilding">VoxelValueBuilding</a></td>
                   <td>repeated</td>
-                  <td><p>建物オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+建物オブジェクトのボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1766,7 +1659,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectChannel">ObjectChannel</h3>
-        <p>航路エリアオブジェクトの値。空間IDを含む。</p>
+        <p>航路エリアオブジェクトの値</p>
 
         
           <table class="field-table">
@@ -1790,17 +1683,21 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                 </tr>
               
                 <tr>
-                  <td>channel_values</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueChannel">VoxelValueChannel</a></td>
-                  <td>repeated</td>
-                  <td><p>飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
-                </tr>
-              
-                <tr>
                   <td>junction_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueJunction">VoxelValueJunction</a></td>
                   <td>repeated</td>
-                  <td><p>他航路との接続点。空間IDを含む。 </p></td>
+                  <td><p>他航路との接続点
+
+他航路との接続点のボクセル </p></td>
+                </tr>
+              
+                <tr>
+                  <td>channel_values</td>
+                  <td><a href="#uas.airmobility.v3.VoxelValueChannel">VoxelValueChannel</a></td>
+                  <td>repeated</td>
+                  <td><p>ボクセルの集合
+
+飛行計画空域ボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1811,7 +1708,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectEmergencyArea">ObjectEmergencyArea</h3>
-        <p>緊急用務空域オブジェクトの値。空間IDを含む。</p>
+        <p>緊急用務空域オブジェクトの値。</p>
 
         
           <table class="field-table">
@@ -1824,14 +1721,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueEmergencyArea">VoxelValueEmergencyArea</a></td>
                   <td>repeated</td>
-                  <td><p>緊急用務空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+緊急用務空域ボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1855,14 +1754,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueGroundRisk">VoxelValueGroundRisk</a></td>
                   <td>repeated</td>
-                  <td><p>グランドリスク指標値の集合 </p></td>
+                  <td><p>ボクセルの集合
+
+グランドリスク指標値。空間IDは2D表現（z/x/y）。 </p></td>
                 </tr>
               
             </tbody>
@@ -1873,7 +1774,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectMicrowave">ObjectMicrowave</h3>
-        <p>電波強度オブジェクト</p>
+        <p>電波強度オブジェクト。mobile/wifiはoneof</p>
 
         
           <table class="field-table">
@@ -1917,7 +1818,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td>optional</td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
@@ -1931,7 +1832,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWMobileNetwork">VoxelValueWMobileNetwork</a></td>
                   <td>repeated</td>
-                  <td><p>携帯網オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+/携帯網オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1973,7 +1876,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectOverlayArea">ObjectOverlayArea</h3>
-        <p>他システム管理エリアオブジェクトの値。空間IDを含む。</p>
+        <p>他システム管理エリアオブジェクトの値</p>
 
         
           <table class="field-table">
@@ -1993,7 +1896,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueOverlayArea">VoxelValueOverlayArea</a></td>
                   <td>repeated</td>
-                  <td><p>他システム管理エリアオブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+他システム管理エリアオブジェクトを構成するボクセ </p></td>
                 </tr>
               
             </tbody>
@@ -2004,7 +1909,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectReserveArea">ObjectReserveArea</h3>
-        <p>飛行計画空域オブジェクトの値。空間IDを含む。</p>
+        <p>飛行計画空域オブジェクトの値</p>
 
         
           <table class="field-table">
@@ -2024,14 +1929,18 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reservation_time</td>
                   <td><a href="#uas.airmobility.v3.ObjectReserveArea.ReserveTime">ObjectReserveArea.ReserveTime</a></td>
                   <td>optional</td>
-                  <td><p>PutReserveAreaRequestでは必須。 </p></td>
+                  <td><p>予約時刻
+
+PutReserveAreaRequestでは必須。 </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueReserveArea">VoxelValueReserveArea</a></td>
                   <td>repeated</td>
-                  <td><p>飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+飛行計画空域ボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2080,7 +1989,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectRestrictedArea">ObjectRestrictedArea</h3>
-        <p>飛行制限空域（飛行制限区域）の値。空間IDを含む。</p>
+        <p>飛行制限空域（飛行制限区域）の値</p>
 
         
           <table class="field-table">
@@ -2100,14 +2009,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>type</td>
                   <td><a href="#uas.airmobility.v3.ObjectRestrictedArea.Type">ObjectRestrictedArea.Type</a></td>
                   <td></td>
-                  <td><p>種別 </p></td>
+                  <td><p>飛行制限空域（飛行制限区域）の種別 </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueRestrictedArea">VoxelValueRestrictedArea</a></td>
                   <td>repeated</td>
-                  <td><p>飛行制限空域オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+飛行制限空域のボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2118,7 +2029,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectTerrain">ObjectTerrain</h3>
-        <p>地形オブジェクトの値。空間IDを含む。</p>
+        <p>地形オブジェクトの値</p>
 
         
           <table class="field-table">
@@ -2131,14 +2042,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueTerrain">VoxelValueTerrain</a></td>
                   <td>repeated</td>
-                  <td><p>地形オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+地形オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2149,7 +2062,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectWeather">ObjectWeather</h3>
-        <p>気象オブジェクトの値。空間IDを含む。</p>
+        <p>気象オブジェクトの値</p>
 
         
           <table class="field-table">
@@ -2162,14 +2075,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeather">VoxelValueWeather</a></td>
                   <td>repeated</td>
-                  <td><p>気象オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+気象オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2180,7 +2095,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.ObjectWeatherForecast">ObjectWeatherForecast</h3>
-        <p>気象予報オブジェクトの値。空間IDを含む。</p>
+        <p>気象予報オブジェクトの値</p>
 
         
           <table class="field-table">
@@ -2193,14 +2108,16 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast">VoxelValueWeatherForecast</a></td>
                   <td>repeated</td>
-                  <td><p>気象オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+気象オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2224,21 +2141,25 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td>optional</td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
                   <td>ssid</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>wifi SSID </p></td>
+                  <td><p>SSID
+
+wifi SSID </p></td>
                 </tr>
               
                 <tr>
                   <td>voxel_values</td>
                   <td><a href="#uas.airmobility.v3.VoxelWifiNetwork">VoxelWifiNetwork</a></td>
                   <td>repeated</td>
-                  <td><p>Wifi網オブジェクトを構成するボクセルの値。空間IDを含む。 </p></td>
+                  <td><p>ボクセルの集合
+
+/Wifi網オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2249,7 +2170,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
         
       
         <h3 id="uas.airmobility.v3.Objects">Objects</h3>
-        <p></p>
+        <p>オブジェクトの集合</p>
 
         
           <table class="field-table">
@@ -2293,7 +2214,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>value</td>
                   <td><a href="#float">float</a></td>
                   <td></td>
-                  <td><p>0-100の指標値 </p></td>
+                  <td><p>指標値
+
+0-100 </p></td>
                 </tr>
               
             </tbody>
@@ -2324,7 +2247,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>vacant</td>
                   <td><a href="#bool">bool</a></td>
                   <td></td>
-                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                  <td><p>建物か否か
+
+値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
                 </tr>
               
             </tbody>
@@ -2379,7 +2304,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>vacant</td>
                   <td><a href="#bool">bool</a></td>
                   <td></td>
-                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                  <td><p>緊急用務空域であるか否か
+
+値（デフォルトfalse）。falseはidなしと等価 </p></td>
                 </tr>
               
             </tbody>
@@ -2403,14 +2330,18 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>id</td>
                   <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
                   <td></td>
-                  <td><p>空間ID。2D表現 </p></td>
+                  <td><p>空間ID。2D表現（z/x/y）
+
+2D表現（z/x/y） </p></td>
                 </tr>
               
                 <tr>
                   <td>value</td>
                   <td><a href="#float">float</a></td>
                   <td></td>
-                  <td><p>0-100の指標値 </p></td>
+                  <td><p>指標値
+
+0-100 </p></td>
                 </tr>
               
             </tbody>
@@ -2441,7 +2372,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>connected_channel_ids</td>
                   <td><a href="#string">string</a></td>
                   <td>repeated</td>
-                  <td><p>接続先の航路のchannel_id </p></td>
+                  <td><p>接続先の航路の列
+
+接続先の航路のchannel_id </p></td>
                 </tr>
               
             </tbody>
@@ -2496,7 +2429,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>reservation_time</td>
                   <td><a href="#uas.airmobility.v3.ObjectReserveArea.ReserveTime">ObjectReserveArea.ReserveTime</a></td>
                   <td>optional</td>
-                  <td><p>予約時間（プロパティと重複する場合は本パラメータが優先） </p></td>
+                  <td><p>予約時間
+
+プロパティと重複する場合は本パラメータが優先 </p></td>
                 </tr>
               
             </tbody>
@@ -2521,6 +2456,15 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
                   <td></td>
                   <td><p>空間ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>vacant</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>飛行制限であるか否か
+
+値（デフォルトfalse）。falseはidなしと等価 </p></td>
                 </tr>
               
             </tbody>
@@ -2551,7 +2495,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>vacant</td>
                   <td><a href="#bool">bool</a></td>
                   <td></td>
-                  <td><p>値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                  <td><p>地表か否か
+
+値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
                 </tr>
               
             </tbody>
@@ -2582,7 +2528,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>RSI</td>
                   <td><a href="#float">float</a></td>
                   <td></td>
-                  <td><p>電波強度(dB) </p></td>
+                  <td><p>電波強度
+
+電波強度(dB) </p></td>
                 </tr>
               
             </tbody>
@@ -2613,7 +2561,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>current_weather</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</a></td>
                   <td></td>
-                  <td><p>現況 </p></td>
+                  <td><p>現況情報 </p></td>
                 </tr>
               
             </tbody>
@@ -2738,7 +2686,7 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>forecast</td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</a></td>
                   <td></td>
-                  <td><p>予報 </p></td>
+                  <td><p>予防情報 </p></td>
                 </tr>
               
             </tbody>
@@ -2828,7 +2776,9 @@ trueの場合は旧のデータを削除し入力の情報で上書き。false�
                   <td>RSI</td>
                   <td><a href="#float">float</a></td>
                   <td></td>
-                  <td><p>電波強度(dB) </p></td>
+                  <td><p>電波強度
+
+電波強度(dB) </p></td>
                 </tr>
               
             </tbody>

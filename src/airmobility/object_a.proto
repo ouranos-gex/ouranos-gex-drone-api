@@ -28,13 +28,17 @@ enum ObjectType { // 地物の種類
 }
 
 
+// オブジェクトの集合
 message Objects {
     repeated Object objects = 10 ;
 }
 
-message Object {
-    int64 object_id = 1 ;
+// オブジェクト
+message Object { // terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof
+    // オブジェクト識別子
+    int64 object_id = 1 ; // 
 
+    //[oneof object] concrete_object
     oneof concrete_object { // 大量のボクセルが存在する場合はstreamで分割される
         ObjectTerrain terrain = 2 ; // [oneof object] 地形
         ObjectBuilding building = 3 ; // [oneof object] 建物
@@ -53,29 +57,39 @@ message Object {
     }
 }
 
-message ObjectTerrain { // 地形オブジェクトの値。空間IDを含む。
-    string reference = 1 ; // 素となる情報へのリンク　
+message ObjectTerrain { // 地形オブジェクトの値
+    // 情報ソース（情報生成源）
+    string reference = 1 ; //
 
-    repeated VoxelValueTerrain voxel_values = 10 ; // 地形オブジェクトを構成するボクセルの値。空間IDを含む。
+    // ボクセルの集合
+    repeated VoxelValueTerrain voxel_values = 10 ; // 地形オブジェクトを構成するボクセル
 }
 
 message VoxelValueTerrain  {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    bool vacant = 2 ; //値（デフォルトfalse）。falseはidが存在しないことと等価
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 地表か否か
+    bool vacant = 2 ; // 値（デフォルトfalse）。falseはidが存在しないことと等価
 }
 
-message ObjectBuilding { // 建物オブジェクトの値。空間IDを含む。
-    string reference = 1 ; // 素となる情報へのリンク
+message ObjectBuilding { // 建物オブジェクトの値
+    // 情報ソース（情報生成源）
+    string reference = 1 ; // 
 
-    repeated VoxelValueBuilding voxel_values = 10 ; // 建物オブジェクトを構成するボクセルの値。空間IDを含む。
+    // ボクセルの集合
+    repeated VoxelValueBuilding voxel_values = 10 ; // 建物オブジェクトのボクセル
 }
 
 message VoxelValueBuilding {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+     // 建物か否か
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidが存在しないことと等価
 }
 
-message ObjectRestrictedArea { // 飛行制限空域（飛行制限区域）の値。空間IDを含む。
+message ObjectRestrictedArea { // 飛行制限空域（飛行制限区域）の値
     enum Type {
         TYPE_FREE = 0; // 制限なし（idが存在しないことと等価）
         TYPE_P = 1; // 飛行禁止
@@ -84,76 +98,112 @@ message ObjectRestrictedArea { // 飛行制限空域（飛行制限区域）の�
         TYPE_N = 4; // 一時制限
     }
 
-    string reference = 1 ; // 素となる情報へのリンク　
-    Type type = 2 ; // 種別
+    // 情報ソース（情報生成源）　
+    string reference = 1 ; //
 
-    repeated VoxelValueRestrictedArea voxel_values = 10 ; // 飛行制限空域オブジェクトを構成するボクセルの値。空間IDを含む。
+    // 飛行制限空域（飛行制限区域）の種別
+    Type type = 2 ; // 
+
+     // ボクセルの集合
+    repeated VoxelValueRestrictedArea voxel_values = 10 ;// 飛行制限空域のボクセル
 }
 
 message VoxelValueRestrictedArea {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; // 
+
+    // 飛行制限であるか否か
+    bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
 }
 
-message ObjectEmergencyArea { //緊急用務空域オブジェクトの値。空間IDを含む。
-    string reference = 1 ; // 素となる情報へのリンク　
-    repeated VoxelValueEmergencyArea voxel_values = 2 ; // 緊急用務空域オブジェクトを構成するボクセルの値。空間IDを含む。
+message ObjectEmergencyArea { //緊急用務空域オブジェクトの値。
+    // 情報ソース（情報生成源）
+    string reference = 1 ; // 
+    
+    // ボクセルの集合
+    repeated VoxelValueEmergencyArea voxel_values = 2 ; // 緊急用務空域ボクセル
 }
 
 message VoxelValueEmergencyArea {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    bool vacant = 2 ; //値（デフォルトfalse）。falseはidが存在しないことと等価
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ;  // 
+    
+    // 緊急用務空域であるか否か
+    bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
 }
 
-message ObjectReserveArea { //飛行計画空域オブジェクトの値。空間IDを含む。
+message ObjectReserveArea { //飛行計画空域オブジェクトの値
     message ReserveTime {
         generic.v3.Period period = 1 ; // 予約時刻帯
         google.protobuf.Duration occupation = 2; //予約時間帯のうち占有予定時間（飛行時間）
         int64 reserve_id = 3 ; // PutReserveAreaRequestでは0。
     }
     
-    string owner_id = 1 ; // 予約者のuserID
+    // 予約者のuserID
+    string owner_id = 1 ; // 
+
+    // 予約時刻
     optional ReserveTime reservation_time = 2 ; // PutReserveAreaRequestでは必須。
 
-    repeated VoxelValueReserveArea voxel_values = 10 ; // 飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。
+    // ボクセルの集合
+    repeated VoxelValueReserveArea voxel_values = 10 ; // 飛行計画空域ボクセル
 }
 
 message VoxelValueReserveArea {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    optional ObjectReserveArea.ReserveTime reservation_time = 2 ; // 予約時間（プロパティと重複する場合は本パラメータが優先）
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 予約時間
+    optional ObjectReserveArea.ReserveTime reservation_time = 2 ; // プロパティと重複する場合は本パラメータが優先
 }
 
 
-message ObjectChannel { //航路エリアオブジェクトの値。空間IDを含む。
-    generic.v3.ServerAddress owner_address = 1 ; // 航路管理元アドレス　
-    string channel_id = 2 ; // 航路識別子
+message ObjectChannel { //航路エリアオブジェクトの値
+    // 航路管理元アドレス　
+    generic.v3.ServerAddress owner_address = 1 ; // 
 
-    repeated VoxelValueChannel channel_values = 10 ; // 飛行計画空域オブジェクトを構成するボクセルの値。空間IDを含む。
-    repeated VoxelValueJunction junction_values = 11 ; // 他航路との接続点。空間IDを含む。
+    // 航路識別子
+    string channel_id = 2 ; // 
+    
+    // 他航路との接続点
+    repeated VoxelValueJunction junction_values = 3 ; // 他航路との接続点のボクセル
+
+    // ボクセルの集合
+    repeated VoxelValueChannel channel_values = 10 ; // 飛行計画空域ボクセル
 }
 
 message VoxelValueChannel {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; // 
 }
 
 message VoxelValueJunction {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; // 
+
+    // 接続先の航路の列
     repeated string connected_channel_ids = 2 ; // 接続先の航路のchannel_id
 }
 
-message ObjectOverlayArea { //他システム管理エリアオブジェクトの値。空間IDを含む。
-    generic.v3.ServerAddress owner_address = 1 ; // 管理元アドレス
+message ObjectOverlayArea { //他システム管理エリアオブジェクトの値
+    // 管理元アドレス
+    generic.v3.ServerAddress owner_address = 1 ; // 
 
-    repeated VoxelValueOverlayArea voxel_values = 10 ; // /他システム管理エリアオブジェクトを構成するボクセルの値。空間IDを含む。
+    // ボクセルの集合
+    repeated VoxelValueOverlayArea voxel_values = 10 ; // 他システム管理エリアオブジェクトを構成するボクセ
 }
 
 message VoxelValueOverlayArea {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
 }
 
-message ObjectWeather { // 気象オブジェクトの値。空間IDを含む。
-    string reference = 1 ; // 素となる情報へのリンク　
+message ObjectWeather { // 気象オブジェクトの値
+    // 情報ソース（情報生成源）
+    string reference = 1 ; // 
 
-    repeated VoxelValueWeather voxel_values = 10 ; // /気象オブジェクトを構成するボクセルの値。空間IDを含む。
+    // ボクセルの集合
+    repeated VoxelValueWeather voxel_values = 10 ; // 気象オブジェクトを構成するボクセル
 }
 
 message VoxelValueWeather {
@@ -172,13 +222,19 @@ message VoxelValueWeather {
         optional string gggg = 20 ; // 運航上重要な気象
     }
 
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    CurrentWeather current_weather = 5 ; // 現況
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 現況情報
+    CurrentWeather current_weather = 5 ; //
 }
 
-message ObjectWeatherForecast { // 気象予報オブジェクトの値。空間IDを含む。    
-    string reference = 1 ; // 素となる情報へのリンク　
-    repeated VoxelValueWeatherForecast voxel_values = 10 ; // /気象オブジェクトを構成するボクセルの値。空間IDを含む。
+message ObjectWeatherForecast { // 気象予報オブジェクトの値
+     // 情報ソース（情報生成源）
+    string reference = 1 ; //
+
+    // ボクセルの集合
+    repeated VoxelValueWeatherForecast voxel_values = 10 ; // 気象オブジェクトを構成するボクセル
 }
 
 message VoxelValueWeatherForecast {
@@ -192,11 +248,14 @@ message VoxelValueWeatherForecast {
         optional float precipitation = 8 ; // 降水量（mm/h）
     }
 
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    Forecast forecast = 2 ; // 予報
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 予防情報
+    Forecast forecast = 2 ; //
 }
 
-message ObjectMicrowave{ // 電波強度オブジェクト
+message ObjectMicrowave{ // 電波強度オブジェクト。mobile/wifiはoneof
     oneof Microwave {
         ObjectMobileNetwork mobile = 1 ;
         ObjectWifiNetwork wifi = 2 ;
@@ -204,9 +263,14 @@ message ObjectMicrowave{ // 電波強度オブジェクト
 }
 
 message ObjectMobileNetwork { // 携帯網
-    optional string reference = 1 ; // 素となる情報へのリンク
-    PublicLandMobileNetWork plmn_id = 2 ; // 通信事業者コード
-    repeated VoxelValueWMobileNetwork voxel_values = 10 ; // /携帯網オブジェクトを構成するボクセルの値。空間IDを含む。
+    // 情報ソース（情報生成源）
+    optional string reference = 1 ; //
+    
+    // 通信事業者コード
+    PublicLandMobileNetWork plmn_id = 2 ; //
+
+    // ボクセルの集合
+    repeated VoxelValueWMobileNetwork voxel_values = 10 ; // 携帯網オブジェクトを構成するボクセル
 
     message PublicLandMobileNetWork { // PLMN https://www.itu.int/rec/T-REC-Q.1001-198811-I/en
         int64 mobile_country_code = 1; // MCC https://www.itu.int/rec/T-REC-E.212-201609-I/en
@@ -215,39 +279,62 @@ message ObjectMobileNetwork { // 携帯網
 }
 
 message VoxelValueWMobileNetwork {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 電波強度
     float RSI = 2 ; // 電波強度(dB)
 }
 
 message ObjectWifiNetwork { // Wifi網
-    optional string reference = 1 ; // 素となる情報へのリンク
+    // 情報ソース（情報生成源）
+    optional string reference = 1 ; //
+
+    // SSID
     string ssid = 2 ; // wifi SSID
-    repeated VoxelWifiNetwork voxel_values = 10 ; // /Wifi網オブジェクトを構成するボクセルの値。空間IDを含む。
+    
+    // ボクセルの集合
+    repeated VoxelWifiNetwork voxel_values = 10 ; // Wifi網オブジェクトを構成するボクセル
 
 }
 
 message VoxelWifiNetwork {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+
+    // 電波強度
     float RSI = 2 ; // 電波強度(dB)
 }
 
 
-message ObjectGroundRisk { // グランドリスクオブジェクトの値   
-    string reference = 1 ; // 素となる情報へのリンク　
-    repeated VoxelValueGroundRisk voxel_values = 10 ; // グランドリスク指標値の集合
+message ObjectGroundRisk { // グランドリスクオブジェクトの値  
+    // 情報ソース（情報生成源）
+    string reference = 1 ; // 　
+
+    // ボクセルの集合
+    repeated VoxelValueGroundRisk voxel_values = 10 ; // グランドリスク指標値。空間IDは2D表現（z/x/y）。
 }
 
 message VoxelValueGroundRisk {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID。2D表現
-    float value = 2 ; // 0-100の指標値
+    // 空間ID。2D表現（z/x/y）
+    generic.v3.SpatialIdentification id = 1 ; // 2D表現（z/x/y）
+
+    // 指標値
+    float value = 2 ; // 0-100
 }
 
-message ObjectAirRisk { // グランドリスクオブジェクトの値   
-    string reference = 1 ; // 素となる情報へのリンク　
-    repeated VoxelValueAirRisk voxel_values = 10 ; // 空間リスク指標値の集合
+message ObjectAirRisk { // グランドリスクオブジェクトの値
+    // 情報ソース（情報生成源）
+    string reference = 1 ; // 
+
+    // ボクセルの集合
+    repeated VoxelValueAirRisk voxel_values = 10 ; // 空間リスク指標値のボクセル
 }
 
 message VoxelValueAirRisk {
-    generic.v3.SpatialIdentification id = 1 ; // 空間ID
-    float value = 2 ; // 0-100の指標値
+    // 空間ID
+    generic.v3.SpatialIdentification id = 1 ; //
+    
+    // 指標値
+    float value = 2 ; // 0-100
 }

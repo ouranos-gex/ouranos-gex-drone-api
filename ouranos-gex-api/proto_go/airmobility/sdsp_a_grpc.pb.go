@@ -24,11 +24,13 @@ const _ = grpc.SupportPackageIsVersion7
 type AirMobilityAPIClient interface {
 	// 空間情報登録
 	//
-	// オブジェクトを空間ID群で登録する。
+	// オブジェクトを登録する。
+	// 存在しないオブジェクト識別子が指定された場合はエラー、オブジェクト識別子を指定しない場合はオブジェクトを新規に生成する。
 	PutObject(ctx context.Context, in *PutObjectRequest, opts ...grpc.CallOption) (*PutObjectResponse, error)
 	// 空間情報取得
 	//
 	// オブジェクトの値を得る
+	// 応答はObjectごとにストリームで返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetObject(ctx context.Context, in *GetObjectRequest, opts ...grpc.CallOption) (AirMobilityAPI_GetObjectClient, error)
 	// 空間情報削除
 	//
@@ -36,7 +38,7 @@ type AirMobilityAPIClient interface {
 	DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*DeleteObjectResponse, error)
 	// 指定領域空間情報取得
 	//
-	// 指定した領域のリスク値などの空間情報の値を得る。
+	// 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetValue(ctx context.Context, in *GetValueRequest, opts ...grpc.CallOption) (AirMobilityAPI_GetValueClient, error)
 	// 飛行計画登録（予約）
 	//
@@ -209,11 +211,13 @@ func (x *airMobilityAPISelectAirspaceArrangementStreamClient) Recv() (*AirspaceA
 type AirMobilityAPIServer interface {
 	// 空間情報登録
 	//
-	// オブジェクトを空間ID群で登録する。
+	// オブジェクトを登録する。
+	// 存在しないオブジェクト識別子が指定された場合はエラー、オブジェクト識別子を指定しない場合はオブジェクトを新規に生成する。
 	PutObject(context.Context, *PutObjectRequest) (*PutObjectResponse, error)
 	// 空間情報取得
 	//
 	// オブジェクトの値を得る
+	// 応答はObjectごとにストリームで返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetObject(*GetObjectRequest, AirMobilityAPI_GetObjectServer) error
 	// 空間情報削除
 	//
@@ -221,7 +225,7 @@ type AirMobilityAPIServer interface {
 	DeleteObject(context.Context, *DeleteObjectRequest) (*DeleteObjectResponse, error)
 	// 指定領域空間情報取得
 	//
-	// 指定した領域のリスク値などの空間情報の値を得る。
+	// 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetValue(*GetValueRequest, AirMobilityAPI_GetValueServer) error
 	// 飛行計画登録（予約）
 	//

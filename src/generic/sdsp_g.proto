@@ -15,11 +15,12 @@ service GenericAPI {
 }
 
 message SpatialIdentification { // 空間ID
+    // 空間IDを表す文字列
     string ID = 1 ; // z/f/x/y
 }
 
 message SpatialIdentifications { // 空間ID
-    repeated string ID = 1 ; // z/f/x/y
+    repeated string ID = 1 ; // 空間ID列
 }
 
 
@@ -65,7 +66,7 @@ message Period { // 期間
     int64 end_time = 2 ; // 終了時刻 UNIX Time (UTC sec)
 }
 
-// エリアや空間の領域の指定
+// エリアや空間の領域の指定。identification/tube/polygonはoneof。
 message SpatialFigure {
     oneof figure { 
         SpatialIdentification identification = 1 ; // [oneof figure]

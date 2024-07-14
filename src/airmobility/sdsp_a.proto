@@ -16,17 +16,19 @@ import "generic/sdsp_g.proto" ;
 service AirMobilityAPI {
     // 空間情報登録
     //
-    // オブジェクトを空間ID群で登録する。
+    // オブジェクトを登録する。
+    // 存在しないオブジェクト識別子が指定された場合はエラー、オブジェクト識別子を指定しない場合はオブジェクトを新規に生成する。
     rpc PutObject(PutObjectRequest) returns (PutObjectResponse){} 
 
     // 空間情報取得
     //
     // オブジェクトの値を得る
+    // 応答はObjectごとにストリームで返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
     rpc GetObject(GetObjectRequest) returns (stream Object){} 
 
     // オブジェクト取得
     //
-    // 指定した領域に含まれるオブジェクトを得る。
+    // 指定した領域に含まれるオブジェクトを返す。
     //rpc SelectObjects(SelectObjectsRequest) returns (SelectObjectsResponse){} 
     
     // 空間情報削除
@@ -36,7 +38,7 @@ service AirMobilityAPI {
 
     // 指定領域空間情報取得
     //
-    // 指定した領域のリスク値などの空間情報の値を得る。
+    // 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
     rpc GetValue(GetValueRequest) returns (stream Objects){} 
 
     // 飛行計画登録（予約）
@@ -75,23 +77,27 @@ service AirMobilityAPI {
 }
 
 message PutObjectRequest{ 
-    //int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
-    bool overwrite = 1 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
-    uas.airmobility.v3.Object object = 2 ;
+    // 上書きフラグ
+    bool overwrite = 1 ; // trueの場合はオブジェクト識別子の指定必須、旧のデータを削除し入力の情報で上書き。falseかつオブジェクト識別子が指定されている場合は空間IDの値を追加。falseかつオブジェクト識別子が指定されていない場合はオブジェクト追加。
+    // 
+    Object object = 2 ; // 
 }
 
 message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
-    int64 object_id = 1 ; // 登録ID
+    // オブジェクト識別子
+    int64 object_id = 1 ; // User名が一致していない場合はエラー
     ErrorCode error = 20 ;
 }
 
 // GetObject入力パラメータ定義
 message GetObjectRequest {
-    int64 object_id = 1 ; // 登録IDの空間ID属性値を得る
+    // オブジェクト識別子
+    int64 object_id = 1 ; // User名が一致していない場合はエラー
 }
 
 message DeleteObjectRequest {
-    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
+    // オブジェクト識別子
+    int64 object_id = 1 ; // User名が一致していない場合はエラー
 }
 
 message DeleteObjectResponse {
@@ -99,27 +105,34 @@ message DeleteObjectResponse {
 }
 
 message GetValueRequest {
-    generic.v3.SpatialFigure figure = 1 ; // 取得する領域
-    repeated ObjectType request_type = 2 ; // 取得するオブジェクトのタイプ。バリアへの対応はオプション。
+    // 取得する領域
+    generic.v3.SpatialFigure figure = 1 ; // 領域を空間IDの列で指定する
+    // 取得するオブジェクトのタイプ
+    repeated ObjectType request_type = 2 ; // 
 }
 
-message GetValueResponse {
-    repeated uas.airmobility.v3.Objects values = 1 ; 
+message GetValueResponse { 
+    // オブジェクトの列
+    repeated Objects values = 1 ; // ボクセルの値はfigureで指定した範囲内のみが返却される
     ErrorCode error = 20 ;
 }
 
 message PutReserveAreaRequest{
-    int64 object_id = 1 ; // 登録ID。0の場合は新規登録。User名が一致していない場合はエラー。
-    bool overwrite = 2 ; // trueの場合は旧のデータを削除し入力の情報で上書き。falseの場合は入力の情報を追加、同じ空間IDであれば値を上書きする。
-    repeated uas.airmobility.v3.VoxelValueReserveArea area = 3 ; // 設定するエリア。
+    // オブジェクト識別子
+    optional int64 object_id = 1 ; // 指定ありでUser名が一致していない場合はエラー。
+    // 上書きフラグ
+    bool overwrite = 2 ; // trueの場合はオブジェクト識別子の指定必須、旧のデータを削除し入力の情報で上書き。falseかつオブジェクト識別子が指定されている場合は空間IDの値を追加。falseかつオブジェクト識別子が指定されていない場合はオブジェクト追加。
+    // 飛行計画空域
+    repeated ObjectReserveArea area = 3 ; // 設定するエリア。
 }
 
 message PutReserveAreaResponse {
-    int64 object_id = 1 ; // 登録ID
+    // オブジェクト識別子
+    int64 object_id = 1 ; // 
     ErrorCode error = 20 ;
 }
 
-
+/*
 message SelectObjectRequest{ // 指定エリア内に存在するオブジェクトを返す
     repeated generic.v3.SpatialFigure area = 1 ; // 指定エリア。
     ObjectType type = 2 ; // 取得する地物の種類。バリアへの対応はオプション。
@@ -129,7 +142,7 @@ message SelectObjectRequest{ // 指定エリア内に存在するオブジェク
     optional string plmn_id = 12 ; // 指定したキャリアの電波強度を取得する
 }
 
-message SelectObjectResponse{ // 指定エリア内に存在するオブジェクト
+message SelectObjectResponse{ //
     message FlyableArea {
         generic.v3.SpatialIdentification id = 1 ; // 空間ID
 
@@ -137,8 +150,11 @@ message SelectObjectResponse{ // 指定エリア内に存在するオブジェ�
         optional uas.airmobility.v3.VoxelValueWeatherForecast.Forecast forecast = 11 ; // 予報
         optional uas.airmobility.v3.VoxelValueWMobileNetwork mobile_network = 12 ; // 電波強度
     }
-    repeated FlyableArea object_id = 1 ;
+
+    // 指定エリア内に存在するオブジェクト
+    repeated FlyableArea flyableArea = 1 ;
 }
+*/
 
 /*
 message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
@@ -150,7 +166,8 @@ message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo�
 // DeleteRequest入力パラメータ定義
 // ユーザ追加は要素番号30以降を利用すること
 message DeleteRequest {
-    repeated int64 object_id = 1 ; // リクエストしたUserIDが登録したUserIDと不一致の場合はエラー。
+    // オブジェクト識別子列
+    repeated int64 object_id = 1 ; // User名が一致していない場合はエラー。
 }
 
 /*
