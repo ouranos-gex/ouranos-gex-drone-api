@@ -23,8 +23,8 @@ enum ObjectType { // 地物の種類
     WEATHER_FORECAST = 21 ; // 気象予報
     MICROWAVE = 22 ; // 電波強度
 
-    GROUND_RISK = 40 ; // グランドリスク
-    AIR_RISK = 41 ; // 空間リスク
+    //GROUND_RISK = 40 ; // グランドリスク (v3.1.0みなおし)
+    //AIR_RISK = 41 ; // 空間リスク (v3.1.0みなおし)
 }
 
 
@@ -52,8 +52,8 @@ message Object { // terrain/building/restricted_area/emergency_area/reserve_area
         ObjectWeatherForecast weather_forecast = 21 ; // [oneof object] 気象予報
         ObjectMicrowave microwave = 22 ; // [oneof object] 通信ネットワーク
 
-        ObjectGroundRisk ground_risk = 40 ;// [oneof object] グランドリスク
-        ObjectAirRisk ari_risk = 41 ;// [oneof object] 気空間リスク
+        //ObjectGroundRisk ground_risk = 40 ;// [oneof object] グランドリスク  (v3.1.0みなおし)
+        //ObjectAirRisk ari_risk = 41 ;// [oneof object] 気空間リスク  (v3.1.0みなおし)
     }
 }
 
@@ -71,6 +71,9 @@ message VoxelValueTerrain  {
 
     // 地表か否か
     bool vacant = 2 ; // 値（デフォルトfalse）。falseはidが存在しないことと等価
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectBuilding { // 建物オブジェクトの値
@@ -87,6 +90,9 @@ message VoxelValueBuilding {
 
      // 建物か否か
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidが存在しないことと等価
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectRestrictedArea { // 飛行制限空域（飛行制限区域）の値
@@ -114,6 +120,9 @@ message VoxelValueRestrictedArea {
 
     // 飛行制限であるか否か
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectEmergencyArea { //緊急用務空域オブジェクトの値。
@@ -130,6 +139,9 @@ message VoxelValueEmergencyArea {
     
     // 緊急用務空域であるか否か
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectReserveArea { //飛行計画空域オブジェクトの値
@@ -155,6 +167,9 @@ message VoxelValueReserveArea {
 
     // 予約時間
     optional ObjectReserveArea.ReserveTime reservation_time = 2 ; // プロパティと重複する場合は本パラメータが優先
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 
@@ -174,7 +189,7 @@ message ObjectChannel { //航路エリアオブジェクトの値
 
 message VoxelValueChannel {
     // 空間ID
-    generic.v3.SpatialIdentification id = 1 ; // 
+    generic.v3.SpatialIdentification id = 1 ; //
 }
 
 message VoxelValueJunction {
@@ -227,6 +242,9 @@ message VoxelValueWeather {
 
     // 現況情報
     CurrentWeather current_weather = 5 ; //
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectWeatherForecast { // 気象予報オブジェクトの値
@@ -253,6 +271,9 @@ message VoxelValueWeatherForecast {
 
     // 予防情報
     Forecast forecast = 2 ; //
+
+    // リスク指標値
+    optional int32 risk_level = 10 ; // リスク指標値
 }
 
 message ObjectMicrowave{ // 電波強度オブジェクト。mobile/wifiはoneof
@@ -306,7 +327,7 @@ message VoxelWifiNetwork {
     float RSI = 2 ; // 電波強度(dB)
 }
 
-
+/*
 message ObjectGroundRisk { // グランドリスクオブジェクトの値  
     // 情報ソース（情報生成源）
     string reference = 1 ; // 　
@@ -337,4 +358,24 @@ message VoxelValueAirRisk {
     
     // 指標値
     float value = 2 ; // 0-100
+}
+*/
+
+message RiskLevels{
+    // リスク指標値
+    repeated RiskLevel risk_levels = 1 ; // リスク指標値。同一の空間IDはひとつのみ。ズームレベルはリクエストで与えた値。
+
+    message RiskLevel{
+        generic.v3.SpatialIdentification id = 1 ;
+        int32 max = 2 ; // idの空間に存在するリスク指標の最大値
+        int32 min = 3 ; // idの空間に存在するリスク指標の最小値
+        float avarage = 4 ; // idの空間に存在するリスク指標の平均値
+        repeated Source source_list = 10 ; // idの空間に存在するリスク指標値のリスト
+    }
+
+    message Source {
+        // オブジェクト識別子
+        int64 object_id = 1 ; // 
+        int32 risk_level = 2 ; // リスク指標値    
+    }
 }

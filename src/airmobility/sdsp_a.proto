@@ -38,7 +38,7 @@ service AirMobilityAPI {
 
     // 指定領域空間情報取得
     //
-    // 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
+    // 指定した領域の空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
     rpc GetValue(GetValueRequest) returns (stream Objects){} 
 
     // 飛行計画登録（予約）
@@ -67,13 +67,12 @@ service AirMobilityAPI {
     // ・変化を取得
     rpc SelectAirspaceArrangementStream(SelectAirspaceArrangementRequest) returns (stream AirspaceArrangement){}   
 
-
-    /*
-    // 空間情報取得（ストリーム）
+    // リスク指標値取得
     //
-    // リスク値などの空間情報の値を得る。
-    rpc GetValueStream(GetValueRequest) returns (stream GetValueResponse){} 
-   */ 
+    // 指定した領域のリスク値指標値を得る。
+    // 本APIのサポートはオプショナル。仕様検討中。
+    rpc GetRiskLevels(GetRiskLevelsRequest) returns (stream RiskLevels){} 
+
 }
 
 message PutObjectRequest{ 
@@ -132,37 +131,6 @@ message PutReserveAreaResponse {
     ErrorCode error = 20 ;
 }
 
-/*
-message SelectObjectRequest{ // 指定エリア内に存在するオブジェクトを返す
-    repeated generic.v3.SpatialFigure area = 1 ; // 指定エリア。
-    ObjectType type = 2 ; // 取得する地物の種類。バリアへの対応はオプション。
-
-    bool with_forecast_weather = 10 ; // 天気予報情報を取得する
-    bool with_current_weather = 11 ; // 現在の天候情報を取得する
-    optional string plmn_id = 12 ; // 指定したキャリアの電波強度を取得する
-}
-
-message SelectObjectResponse{ //
-    message FlyableArea {
-        generic.v3.SpatialIdentification id = 1 ; // 空間ID
-
-        optional uas.airmobility.v3.VoxelValueWeather.CurrentWeather current_weather = 10 ; // 現況
-        optional uas.airmobility.v3.VoxelValueWeatherForecast.Forecast forecast = 11 ; // 予報
-        optional uas.airmobility.v3.VoxelValueWMobileNetwork mobile_network = 12 ; // 電波強度
-    }
-
-    // 指定エリア内に存在するオブジェクト
-    repeated FlyableArea flyableArea = 1 ;
-}
-*/
-
-/*
-message PutObjectResponse{ // 設定できるエリアの種別（AirspaceInfo）はユーザ権限による
-    int64 object_id = 1 ; // 登録ID
-    ErrorCode error = 20 ;
-}
-*/
-
 // DeleteRequest入力パラメータ定義
 // ユーザ追加は要素番号30以降を利用すること
 message DeleteRequest {
@@ -201,6 +169,14 @@ message AirspaceArrangement {
         generic.v3.SpatialIdentifications occupied_space = 3 ; // 飛行許容領域から閉塞領域に変更された領域
         ErrorCode error = 20 ;
     }
+}
+
+message GetRiskLevelsRequest{
+    // 取得する領域
+    generic.v3.SpatialFigure figure = 1 ; // 領域を空間IDの列で指定する
+
+    // 出力するズームレベル
+    int32 zoom_level = 2 ; // 出力するズームレベル
 }
 
 /*
