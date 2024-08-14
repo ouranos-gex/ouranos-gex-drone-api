@@ -266,6 +266,10 @@
                 </li>
               
                 <li>
+                  <a href="#uas.airmobility.v3.GetRiskLevelsRequest"><span class="badge">M</span>GetRiskLevelsRequest</a>
+                </li>
+              
+                <li>
                   <a href="#uas.airmobility.v3.GetValueRequest"><span class="badge">M</span>GetValueRequest</a>
                 </li>
               
@@ -321,10 +325,6 @@
                 </li>
               
                 <li>
-                  <a href="#uas.airmobility.v3.ObjectAirRisk"><span class="badge">M</span>ObjectAirRisk</a>
-                </li>
-              
-                <li>
                   <a href="#uas.airmobility.v3.ObjectBuilding"><span class="badge">M</span>ObjectBuilding</a>
                 </li>
               
@@ -334,10 +334,6 @@
               
                 <li>
                   <a href="#uas.airmobility.v3.ObjectEmergencyArea"><span class="badge">M</span>ObjectEmergencyArea</a>
-                </li>
-              
-                <li>
-                  <a href="#uas.airmobility.v3.ObjectGroundRisk"><span class="badge">M</span>ObjectGroundRisk</a>
                 </li>
               
                 <li>
@@ -389,7 +385,15 @@
                 </li>
               
                 <li>
-                  <a href="#uas.airmobility.v3.VoxelValueAirRisk"><span class="badge">M</span>VoxelValueAirRisk</a>
+                  <a href="#uas.airmobility.v3.RiskLevels"><span class="badge">M</span>RiskLevels</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.RiskLevels.RiskLevel"><span class="badge">M</span>RiskLevels.RiskLevel</a>
+                </li>
+              
+                <li>
+                  <a href="#uas.airmobility.v3.RiskLevels.Source"><span class="badge">M</span>RiskLevels.Source</a>
                 </li>
               
                 <li>
@@ -402,10 +406,6 @@
               
                 <li>
                   <a href="#uas.airmobility.v3.VoxelValueEmergencyArea"><span class="badge">M</span>VoxelValueEmergencyArea</a>
-                </li>
-              
-                <li>
-                  <a href="#uas.airmobility.v3.VoxelValueGroundRisk"><span class="badge">M</span>VoxelValueGroundRisk</a>
                 </li>
               
                 <li>
@@ -1070,6 +1070,41 @@ User名が一致していない場合はエラー </p></td>
 
         
       
+        <h3 id="uas.airmobility.v3.GetRiskLevelsRequest">GetRiskLevelsRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>figure</td>
+                  <td><a href="#generic.v3.SpatialFigure">generic.v3.SpatialFigure</a></td>
+                  <td></td>
+                  <td><p>取得する領域
+
+領域を空間IDの列で指定する </p></td>
+                </tr>
+              
+                <tr>
+                  <td>zoom_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>出力するズームレベル
+
+出力するズームレベル </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
         <h3 id="uas.airmobility.v3.GetValueRequest">GetValueRequest</h3>
         <p></p>
 
@@ -1431,7 +1466,7 @@ trueの場合はオブジェクト識別子の指定必須、旧のデータを�
                 <td><a href="#uas.airmobility.v3.Objects">Objects</a> stream</td>
                 <td><p>指定領域空間情報取得
 
-指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。</p></td>
+指定した領域の空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。</p></td>
               </tr>
             
               <tr>
@@ -1470,6 +1505,16 @@ trueの場合はオブジェクト識別子の指定必須、旧のデータを�
 次のようなケースに利用する。
 ・大量のデータを分割して取得
 ・変化を取得</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetRiskLevels</td>
+                <td><a href="#uas.airmobility.v3.GetRiskLevelsRequest">GetRiskLevelsRequest</a></td>
+                <td><a href="#uas.airmobility.v3.RiskLevels">RiskLevels</a> stream</td>
+                <td><p>リスク指標値取得
+
+指定した領域のリスク値指標値を得る。
+本APIのサポートはオプショナル。仕様検討中。</p></td>
               </tr>
             
           </tbody>
@@ -1569,53 +1614,6 @@ trueの場合はオブジェクト識別子の指定必須、旧のデータを�
                   <td><a href="#uas.airmobility.v3.ObjectMicrowave">ObjectMicrowave</a></td>
                   <td></td>
                   <td><p>[oneof object] 通信ネットワーク </p></td>
-                </tr>
-              
-                <tr>
-                  <td>ground_risk</td>
-                  <td><a href="#uas.airmobility.v3.ObjectGroundRisk">ObjectGroundRisk</a></td>
-                  <td></td>
-                  <td><p>[oneof object] グランドリスク </p></td>
-                </tr>
-              
-                <tr>
-                  <td>ari_risk</td>
-                  <td><a href="#uas.airmobility.v3.ObjectAirRisk">ObjectAirRisk</a></td>
-                  <td></td>
-                  <td><p>[oneof object] 気空間リスク </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="uas.airmobility.v3.ObjectAirRisk">ObjectAirRisk</h3>
-        <p>グランドリスクオブジェクトの値</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>reference</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>情報ソース（情報生成源） </p></td>
-                </tr>
-              
-                <tr>
-                  <td>voxel_values</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueAirRisk">VoxelValueAirRisk</a></td>
-                  <td>repeated</td>
-                  <td><p>ボクセルの集合
-
-空間リスク指標値のボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -1740,39 +1738,6 @@ trueの場合はオブジェクト識別子の指定必須、旧のデータを�
 
         
       
-        <h3 id="uas.airmobility.v3.ObjectGroundRisk">ObjectGroundRisk</h3>
-        <p>グランドリスクオブジェクトの値</p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>reference</td>
-                  <td><a href="#string">string</a></td>
-                  <td></td>
-                  <td><p>情報ソース（情報生成源） </p></td>
-                </tr>
-              
-                <tr>
-                  <td>voxel_values</td>
-                  <td><a href="#uas.airmobility.v3.VoxelValueGroundRisk">VoxelValueGroundRisk</a></td>
-                  <td>repeated</td>
-                  <td><p>ボクセルの集合
-
-グランドリスク指標値。空間IDは2D表現（z/x/y）。 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
         <h3 id="uas.airmobility.v3.ObjectMicrowave">ObjectMicrowave</h3>
         <p>電波強度オブジェクト。mobile/wifiはoneof</p>
 
@@ -1834,7 +1799,7 @@ trueの場合はオブジェクト識別子の指定必須、旧のデータを�
                   <td>repeated</td>
                   <td><p>ボクセルの集合
 
-/携帯網オブジェクトを構成するボクセル </p></td>
+携帯網オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2002,7 +1967,7 @@ PutReserveAreaRequestでは必須。 </p></td>
                   <td>reference</td>
                   <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>素となる情報へのリンク </p></td>
+                  <td><p>情報ソース（情報生成源） </p></td>
                 </tr>
               
                 <tr>
@@ -2159,7 +2124,7 @@ wifi SSID </p></td>
                   <td>repeated</td>
                   <td><p>ボクセルの集合
 
-/Wifi網オブジェクトを構成するボクセル </p></td>
+Wifi網オブジェクトを構成するボクセル </p></td>
                 </tr>
               
             </tbody>
@@ -2193,7 +2158,33 @@ wifi SSID </p></td>
 
         
       
-        <h3 id="uas.airmobility.v3.VoxelValueAirRisk">VoxelValueAirRisk</h3>
+        <h3 id="uas.airmobility.v3.RiskLevels">RiskLevels</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>risk_levels</td>
+                  <td><a href="#uas.airmobility.v3.RiskLevels.RiskLevel">RiskLevels.RiskLevel</a></td>
+                  <td>repeated</td>
+                  <td><p>リスク指標値
+
+リスク指標値。同一の空間IDはひとつのみ。ズームレベルはリクエストで与えた値。 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.RiskLevels.RiskLevel">RiskLevels.RiskLevel</h3>
         <p></p>
 
         
@@ -2207,16 +2198,66 @@ wifi SSID </p></td>
                   <td>id</td>
                   <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
                   <td></td>
-                  <td><p>空間ID </p></td>
+                  <td><p> </p></td>
                 </tr>
               
                 <tr>
-                  <td>value</td>
+                  <td>max</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>idの空間に存在するリスク指標の最大値 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>min</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>idの空間に存在するリスク指標の最小値 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>avarage</td>
                   <td><a href="#float">float</a></td>
                   <td></td>
-                  <td><p>指標値
+                  <td><p>idの空間に存在するリスク指標の平均値 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>source_list</td>
+                  <td><a href="#uas.airmobility.v3.RiskLevels.Source">RiskLevels.Source</a></td>
+                  <td>repeated</td>
+                  <td><p>idの空間に存在するリスク指標値のリスト </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
 
-0-100 </p></td>
+          
+
+        
+      
+        <h3 id="uas.airmobility.v3.RiskLevels.Source">RiskLevels.Source</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>object_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>オブジェクト識別子 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>risk_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>リスク指標値 </p></td>
                 </tr>
               
             </tbody>
@@ -2250,6 +2291,15 @@ wifi SSID </p></td>
                   <td><p>建物か否か
 
 値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>risk_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td>optional</td>
+                  <td><p>リスク指標値
+
+リスク指標値 </p></td>
                 </tr>
               
             </tbody>
@@ -2307,41 +2357,6 @@ wifi SSID </p></td>
                   <td><p>緊急用務空域であるか否か
 
 値（デフォルトfalse）。falseはidなしと等価 </p></td>
-                </tr>
-              
-            </tbody>
-          </table>
-
-          
-
-        
-      
-        <h3 id="uas.airmobility.v3.VoxelValueGroundRisk">VoxelValueGroundRisk</h3>
-        <p></p>
-
-        
-          <table class="field-table">
-            <thead>
-              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
-            </thead>
-            <tbody>
-              
-                <tr>
-                  <td>id</td>
-                  <td><a href="#generic.v3.SpatialIdentification">generic.v3.SpatialIdentification</a></td>
-                  <td></td>
-                  <td><p>空間ID。2D表現（z/x/y）
-
-2D表現（z/x/y） </p></td>
-                </tr>
-              
-                <tr>
-                  <td>value</td>
-                  <td><a href="#float">float</a></td>
-                  <td></td>
-                  <td><p>指標値
-
-0-100 </p></td>
                 </tr>
               
             </tbody>
@@ -2500,6 +2515,15 @@ wifi SSID </p></td>
 値（デフォルトfalse）。falseはidが存在しないことと等価 </p></td>
                 </tr>
               
+                <tr>
+                  <td>risk_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td>optional</td>
+                  <td><p>リスク指標値
+
+リスク指標値 </p></td>
+                </tr>
+              
             </tbody>
           </table>
 
@@ -2562,6 +2586,15 @@ wifi SSID </p></td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeather.CurrentWeather">VoxelValueWeather.CurrentWeather</a></td>
                   <td></td>
                   <td><p>現況情報 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>risk_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td>optional</td>
+                  <td><p>リスク指標値
+
+リスク指標値 </p></td>
                 </tr>
               
             </tbody>
@@ -2687,6 +2720,15 @@ wifi SSID </p></td>
                   <td><a href="#uas.airmobility.v3.VoxelValueWeatherForecast.Forecast">VoxelValueWeatherForecast.Forecast</a></td>
                   <td></td>
                   <td><p>予防情報 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>risk_level</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td>optional</td>
+                  <td><p>リスク指標値
+
+リスク指標値 </p></td>
                 </tr>
               
             </tbody>
@@ -2903,18 +2945,6 @@ wifi SSID </p></td>
                 <td>MICROWAVE</td>
                 <td>22</td>
                 <td><p>電波強度</p></td>
-              </tr>
-            
-              <tr>
-                <td>GROUND_RISK</td>
-                <td>40</td>
-                <td><p>グランドリスク</p></td>
-              </tr>
-            
-              <tr>
-                <td>AIR_RISK</td>
-                <td>41</td>
-                <td><p>空間リスク</p></td>
               </tr>
             
           </tbody>

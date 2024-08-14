@@ -93,10 +93,53 @@
         ]
       }
     },
+    "/uas/api/airmobility/v3/get-risk-levels": {
+      "post": {
+        "summary": "リスク指標値取得",
+        "description": "指定した領域のリスク値指標値を得る。\n本APIのサポートはオプショナル。仕様検討中。",
+        "operationId": "AirMobilityAPI_GetRiskLevels",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v3RiskLevels"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v3RiskLevels"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v3GetRiskLevelsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AirMobilityAPI"
+        ]
+      }
+    },
     "/uas/api/airmobility/v3/get-value": {
       "post": {
         "summary": "指定領域空間情報取得",
-        "description": "指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。",
+        "description": "指定した領域の空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。",
         "operationId": "AirMobilityAPI_GetValue",
         "responses": {
           "200": {
@@ -339,6 +382,51 @@
       "default": "ALTITUDE_ATTRIBUTE_ELLIPSOID",
       "title": "- ALTITUDE_ATTRIBUTE_ELLIPSOID: 楕円球体面高（当面対象外）\n - ALTITUDE_ATTRIBUTE_MSL: ジオイド高\n - ALTITUDE_ATTRIBUTE_AGL: 地上高（当面対象外）"
     },
+    "RiskLevelsRiskLevel": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/definitions/v3SpatialIdentification"
+        },
+        "max": {
+          "type": "integer",
+          "format": "int32",
+          "title": "idの空間に存在するリスク指標の最大値"
+        },
+        "min": {
+          "type": "integer",
+          "format": "int32",
+          "title": "idの空間に存在するリスク指標の最小値"
+        },
+        "avarage": {
+          "type": "number",
+          "format": "float",
+          "title": "idの空間に存在するリスク指標の平均値"
+        },
+        "sourceList": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RiskLevelsSource"
+          },
+          "title": "idの空間に存在するリスク指標値のリスト"
+        }
+      }
+    },
+    "RiskLevelsSource": {
+      "type": "object",
+      "properties": {
+        "objectId": {
+          "type": "string",
+          "format": "int64",
+          "title": "オブジェクト識別子"
+        },
+        "riskLevel": {
+          "type": "integer",
+          "format": "int32",
+          "title": "リスク指標値"
+        }
+      }
+    },
     "SpatialFigurePolygon": {
       "type": "object",
       "title": "多角形（表現形式検討中）"
@@ -547,6 +635,22 @@
       },
       "title": "GetObject入力パラメータ定義"
     },
+    "v3GetRiskLevelsRequest": {
+      "type": "object",
+      "properties": {
+        "figure": {
+          "$ref": "#/definitions/v3SpatialFigure",
+          "description": "領域を空間IDの列で指定する",
+          "title": "取得する領域"
+        },
+        "zoomLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "出力するズームレベル",
+          "title": "出力するズームレベル"
+        }
+      }
+    },
     "v3GetValueRequest": {
       "type": "object",
       "properties": {
@@ -611,36 +715,10 @@
         "microwave": {
           "$ref": "#/definitions/v3ObjectMicrowave",
           "title": "[oneof object] 通信ネットワーク"
-        },
-        "groundRisk": {
-          "$ref": "#/definitions/v3ObjectGroundRisk",
-          "title": "[oneof object] グランドリスク"
-        },
-        "ariRisk": {
-          "$ref": "#/definitions/v3ObjectAirRisk",
-          "title": "[oneof object] 気空間リスク"
         }
       },
       "description": "terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof",
       "title": "オブジェクト"
-    },
-    "v3ObjectAirRisk": {
-      "type": "object",
-      "properties": {
-        "reference": {
-          "type": "string",
-          "title": "情報ソース（情報生成源）"
-        },
-        "voxelValues": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v3VoxelValueAirRisk"
-          },
-          "description": "空間リスク指標値のボクセル",
-          "title": "ボクセルの集合"
-        }
-      },
-      "title": "グランドリスクオブジェクトの値"
     },
     "v3ObjectBuilding": {
       "type": "object",
@@ -707,24 +785,6 @@
         }
       },
       "title": "緊急用務空域オブジェクトの値。"
-    },
-    "v3ObjectGroundRisk": {
-      "type": "object",
-      "properties": {
-        "reference": {
-          "type": "string",
-          "title": "情報ソース（情報生成源）"
-        },
-        "voxelValues": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/v3VoxelValueGroundRisk"
-          },
-          "description": "グランドリスク指標値。空間IDは2D表現（z/x/y）。",
-          "title": "ボクセルの集合"
-        }
-      },
-      "title": "グランドリスクオブジェクトの値"
     },
     "v3ObjectMicrowave": {
       "type": "object",
@@ -854,12 +914,10 @@
         "OVERLAY_AREA",
         "WEATHER",
         "WEATHER_FORECAST",
-        "MICROWAVE",
-        "GROUND_RISK",
-        "AIR_RISK"
+        "MICROWAVE"
       ],
       "default": "OBJECT_TYPE_UNSPECIFIED",
-      "description": "- TERRAIN: 地形（バリア）\n - BUILDING: 建物（バリア）\n - RESTRICTED_AREA: 飛行制限空域（飛行空域）\n - EMERGENCY_AREA: 緊急用務空域（飛行空域）\n - RESERVE_AREA: 飛行計画空域（飛行空域）\n - CHANNEL: 航路エリア（飛行空域）\n - OVERLAY_AREA: 他システム（SDSPやUSS）で管理される空域\n - WEATHER: 気象\n - WEATHER_FORECAST: 気象予報\n - MICROWAVE: 電波強度\n - GROUND_RISK: グランドリスク\n - AIR_RISK: 空間リスク",
+      "description": "- TERRAIN: 地形（バリア）\n - BUILDING: 建物（バリア）\n - RESTRICTED_AREA: 飛行制限空域（飛行空域）\n - EMERGENCY_AREA: 緊急用務空域（飛行空域）\n - RESERVE_AREA: 飛行計画空域（飛行空域）\n - CHANNEL: 航路エリア（飛行空域）\n - OVERLAY_AREA: 他システム（SDSPやUSS）で管理される空域\n - WEATHER: 気象\n - WEATHER_FORECAST: 気象予報\n - MICROWAVE: 電波強度",
       "title": "地物の種類"
     },
     "v3ObjectWeather": {
@@ -1037,6 +1095,19 @@
         }
       }
     },
+    "v3RiskLevels": {
+      "type": "object",
+      "properties": {
+        "riskLevels": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RiskLevelsRiskLevel"
+          },
+          "description": "リスク指標値。同一の空間IDはひとつのみ。ズームレベルはリクエストで与えた値。",
+          "title": "リスク指標値"
+        }
+      }
+    },
     "v3SelectAirspaceArrangementRequest": {
       "type": "object",
       "properties": {
@@ -1131,21 +1202,6 @@
       },
       "title": "空間ID"
     },
-    "v3VoxelValueAirRisk": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/v3SpatialIdentification",
-          "title": "空間ID"
-        },
-        "value": {
-          "type": "number",
-          "format": "float",
-          "description": "0-100",
-          "title": "指標値"
-        }
-      }
-    },
     "v3VoxelValueBuilding": {
       "type": "object",
       "properties": {
@@ -1157,6 +1213,12 @@
           "type": "boolean",
           "description": "値（デフォルトfalse）。falseはidが存在しないことと等価",
           "title": "建物か否か"
+        },
+        "riskLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "リスク指標値",
+          "title": "リスク指標値"
         }
       }
     },
@@ -1180,22 +1242,6 @@
           "type": "boolean",
           "description": "値（デフォルトfalse）。falseはidなしと等価",
           "title": "緊急用務空域であるか否か"
-        }
-      }
-    },
-    "v3VoxelValueGroundRisk": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/v3SpatialIdentification",
-          "description": "2D表現（z/x/y）",
-          "title": "空間ID。2D表現（z/x/y）"
-        },
-        "value": {
-          "type": "number",
-          "format": "float",
-          "description": "0-100",
-          "title": "指標値"
         }
       }
     },
@@ -1264,6 +1310,12 @@
           "type": "boolean",
           "description": "値（デフォルトfalse）。falseはidが存在しないことと等価",
           "title": "地表か否か"
+        },
+        "riskLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "リスク指標値",
+          "title": "リスク指標値"
         }
       }
     },
@@ -1292,6 +1344,12 @@
         "currentWeather": {
           "$ref": "#/definitions/VoxelValueWeatherCurrentWeather",
           "title": "現況情報"
+        },
+        "riskLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "リスク指標値",
+          "title": "リスク指標値"
         }
       }
     },
@@ -1305,6 +1363,12 @@
         "forecast": {
           "$ref": "#/definitions/VoxelValueWeatherForecastForecast",
           "title": "予防情報"
+        },
+        "riskLevel": {
+          "type": "integer",
+          "format": "int32",
+          "description": "リスク指標値",
+          "title": "リスク指標値"
         }
       }
     },

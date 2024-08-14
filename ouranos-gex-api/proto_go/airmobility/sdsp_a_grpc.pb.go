@@ -38,7 +38,7 @@ type AirMobilityAPIClient interface {
 	DeleteObject(ctx context.Context, in *DeleteObjectRequest, opts ...grpc.CallOption) (*DeleteObjectResponse, error)
 	// 指定領域空間情報取得
 	//
-	// 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
+	// 指定した領域の空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetValue(ctx context.Context, in *GetValueRequest, opts ...grpc.CallOption) (AirMobilityAPI_GetValueClient, error)
 	// 飛行計画登録（予約）
 	//
@@ -63,6 +63,11 @@ type AirMobilityAPIClient interface {
 	// ・大量のデータを分割して取得
 	// ・変化を取得
 	SelectAirspaceArrangementStream(ctx context.Context, in *SelectAirspaceArrangementRequest, opts ...grpc.CallOption) (AirMobilityAPI_SelectAirspaceArrangementStreamClient, error)
+	// リスク指標値取得
+	//
+	// 指定した領域のリスク値指標値を得る。
+	// 本APIのサポートはオプショナル。仕様検討中。
+	GetRiskLevels(ctx context.Context, in *GetRiskLevelsRequest, opts ...grpc.CallOption) (AirMobilityAPI_GetRiskLevelsClient, error)
 }
 
 type airMobilityAPIClient struct {
@@ -205,6 +210,38 @@ func (x *airMobilityAPISelectAirspaceArrangementStreamClient) Recv() (*AirspaceA
 	return m, nil
 }
 
+func (c *airMobilityAPIClient) GetRiskLevels(ctx context.Context, in *GetRiskLevelsRequest, opts ...grpc.CallOption) (AirMobilityAPI_GetRiskLevelsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &AirMobilityAPI_ServiceDesc.Streams[3], "/uas.airmobility.v3.AirMobilityAPI/GetRiskLevels", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &airMobilityAPIGetRiskLevelsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type AirMobilityAPI_GetRiskLevelsClient interface {
+	Recv() (*RiskLevels, error)
+	grpc.ClientStream
+}
+
+type airMobilityAPIGetRiskLevelsClient struct {
+	grpc.ClientStream
+}
+
+func (x *airMobilityAPIGetRiskLevelsClient) Recv() (*RiskLevels, error) {
+	m := new(RiskLevels)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // AirMobilityAPIServer is the server API for AirMobilityAPI service.
 // All implementations must embed UnimplementedAirMobilityAPIServer
 // for forward compatibility
@@ -225,7 +262,7 @@ type AirMobilityAPIServer interface {
 	DeleteObject(context.Context, *DeleteObjectRequest) (*DeleteObjectResponse, error)
 	// 指定領域空間情報取得
 	//
-	// 指定した領域のリスク値などの空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
+	// 指定した領域の空間情報の値を返す。terrain/building/restricted_area/emergency_area/reserve_area/channel/overlay_area/weather/weather_forecast/microwave/ground_risk/ari_riskはoneof。
 	GetValue(*GetValueRequest, AirMobilityAPI_GetValueServer) error
 	// 飛行計画登録（予約）
 	//
@@ -250,6 +287,11 @@ type AirMobilityAPIServer interface {
 	// ・大量のデータを分割して取得
 	// ・変化を取得
 	SelectAirspaceArrangementStream(*SelectAirspaceArrangementRequest, AirMobilityAPI_SelectAirspaceArrangementStreamServer) error
+	// リスク指標値取得
+	//
+	// 指定した領域のリスク値指標値を得る。
+	// 本APIのサポートはオプショナル。仕様検討中。
+	GetRiskLevels(*GetRiskLevelsRequest, AirMobilityAPI_GetRiskLevelsServer) error
 	mustEmbedUnimplementedAirMobilityAPIServer()
 }
 
@@ -277,6 +319,9 @@ func (UnimplementedAirMobilityAPIServer) SelectAirspaceArrangement(context.Conte
 }
 func (UnimplementedAirMobilityAPIServer) SelectAirspaceArrangementStream(*SelectAirspaceArrangementRequest, AirMobilityAPI_SelectAirspaceArrangementStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method SelectAirspaceArrangementStream not implemented")
+}
+func (UnimplementedAirMobilityAPIServer) GetRiskLevels(*GetRiskLevelsRequest, AirMobilityAPI_GetRiskLevelsServer) error {
+	return status.Errorf(codes.Unimplemented, "method GetRiskLevels not implemented")
 }
 func (UnimplementedAirMobilityAPIServer) mustEmbedUnimplementedAirMobilityAPIServer() {}
 
@@ -426,6 +471,27 @@ func (x *airMobilityAPISelectAirspaceArrangementStreamServer) Send(m *AirspaceAr
 	return x.ServerStream.SendMsg(m)
 }
 
+func _AirMobilityAPI_GetRiskLevels_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetRiskLevelsRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(AirMobilityAPIServer).GetRiskLevels(m, &airMobilityAPIGetRiskLevelsServer{stream})
+}
+
+type AirMobilityAPI_GetRiskLevelsServer interface {
+	Send(*RiskLevels) error
+	grpc.ServerStream
+}
+
+type airMobilityAPIGetRiskLevelsServer struct {
+	grpc.ServerStream
+}
+
+func (x *airMobilityAPIGetRiskLevelsServer) Send(m *RiskLevels) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 // AirMobilityAPI_ServiceDesc is the grpc.ServiceDesc for AirMobilityAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -464,6 +530,11 @@ var AirMobilityAPI_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "SelectAirspaceArrangementStream",
 			Handler:       _AirMobilityAPI_SelectAirspaceArrangementStream_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetRiskLevels",
+			Handler:       _AirMobilityAPI_GetRiskLevels_Handler,
 			ServerStreams: true,
 		},
 	},

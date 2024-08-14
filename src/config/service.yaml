@@ -27,3 +27,6 @@ http:
         - selector: uas.airmobility.v3.AirMobilityAPI.SelectAirspaceArrangementStream
           post: /uas/api/airmobility/v3/select-airspace-arrangement-stream
           body: '*'
+        - selector: uas.airmobility.v3.AirMobilityAPI.GetRiskLevels
+          post: /uas/api/airmobility/v3/get-risk-levels
+          body: '*'
