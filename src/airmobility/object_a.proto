@@ -122,7 +122,7 @@ message VoxelValueRestrictedArea {
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
 
     // リスク指標値
-    optional int32 risk_level = 10 ; // リスク指標値
+    // optional int32 risk_level = 10 ; // 飛行制限空域についてはリスク指標値を設定しない
 }
 
 message ObjectEmergencyArea { //緊急用務空域オブジェクトの値。
@@ -141,7 +141,7 @@ message VoxelValueEmergencyArea {
     bool vacant = 2 ; //値（デフォルトfalse）。falseはidなしと等価
 
     // リスク指標値
-    optional int32 risk_level = 10 ; // リスク指標値
+    //optional int32 risk_level = 10 ; /// 緊急用務空域についてはリスク指標値を設定しない
 }
 
 message ObjectReserveArea { //飛行計画空域オブジェクトの値
@@ -169,7 +169,7 @@ message VoxelValueReserveArea {
     optional ObjectReserveArea.ReserveTime reservation_time = 2 ; // プロパティと重複する場合は本パラメータが優先
 
     // リスク指標値
-    optional int32 risk_level = 10 ; // リスク指標値
+    //optional int32 risk_level = 10 ; // // 予約空域についてはリスク指標値を設定しない
 }
 
 
